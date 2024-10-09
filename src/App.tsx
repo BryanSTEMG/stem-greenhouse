@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
 import Header from './components/Header/Header';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import DonorLetter from './pages/DonorLetter/DonorLetter';
+import { AuthContext } from './context/AuthContext';
 
 function App(): JSX.Element {
+  const { user } = useContext(AuthContext);
+
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/donor-letter/*" element={<DonorLetter />} />
-      </Routes>
+      {user && <Header />}
+      <AppRoutes />
     </Router>
   );
 }
