@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  const allowedEmails = ['bryan@stemgreenhouse.org']; 
+  const allowedEmails = ['bryan@stemgreenhouse.org', 'mia@stemgreenhouse.org', 'keli@stemgreenhouse.org']; 
 
   const signInWithGoogle = async () => {
     try {
