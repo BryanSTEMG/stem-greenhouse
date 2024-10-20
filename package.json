@@ -4,6 +4,9 @@
   "private": true,
   "homepage": "https://bryanstemg.github.io/stem-greenhouse/",
   "dependencies": {
+    "@pdfme/common": "^5.1.5",
+    "@pdfme/generator": "^5.1.5",
+    "@pdfme/schemas": "^5.1.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -13,6 +16,7 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
+    "date-fns": "^4.1.0",
     "firebase": "^10.14.0",
     "postcss": "^8.4.47",
     "react": "^18.3.1",

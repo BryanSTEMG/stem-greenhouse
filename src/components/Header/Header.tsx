@@ -1,10 +1,8 @@
 // src/components/Header/Header.tsx
 
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "../../assets/images/logo.svg";
-import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 function Header(): JSX.Element {
   const { user, signOutUser } = useContext(AuthContext);
@@ -14,28 +12,29 @@ function Header(): JSX.Element {
       {/* Left Side */}
       <div className="flex items-center">
         <Link to="/">
-          <Logo className="h-8 w-8 mr-4" />
+          <span className="text-xl font-bold mr-4">Stem Greenhouse</span>
         </Link>
         <nav className="flex items-center">
           <Link to="/" className="mx-2 hover:text-gray-400">
             Home
           </Link>
-          {/* Generators Dropdown */}
-          {/* (Include your existing Generators dropdown code here) */}
+          <Link to="/donor-letter" className="mx-2 hover:text-gray-400">
+            Donor Letter
+          </Link>
+          {/* Add other navigation links if needed */}
         </nav>
       </div>
 
       {/* Right Side */}
       <div className="flex items-center">
         {user && (
-          <button onClick={signOutUser} className="mx-2 hover:text-gray-400">
+          <button
+            onClick={signOutUser}
+            className="mx-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
             Sign Out
           </button>
         )}
-        {/* Settings Icon */}
-        <button className="mx-2 focus:outline-none hover:text-gray-400">
-          <SettingsIcon className="w-6 h-6" />
-        </button>
       </div>
     </header>
   );
