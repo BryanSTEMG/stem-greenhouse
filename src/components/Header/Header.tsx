@@ -12,7 +12,7 @@ function Header(): JSX.Element {
       {/* Left Side */}
       <div className="flex items-center">
         <Link to="/">
-          <span className="text-xl font-bold mr-4">Stem Greenhouse</span>
+          <span className="text-xl font-bold mr-4">STEM Greenhouse</span>
         </Link>
         <nav className="flex items-center">
           <Link to="/" className="mx-2 hover:text-gray-400">
