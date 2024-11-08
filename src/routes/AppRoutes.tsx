@@ -4,6 +4,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import DonorLetter from '../pages/DonorLetter/DonorLetter';
+import LabelMaker from '../pages/LabelMaker/LabelMaker';
 import SignIn from '../pages/SignIn/SignIn';
 import PrivateRoute from './PrivateRoute';
 
@@ -24,6 +25,14 @@ function AppRoutes(): JSX.Element {
         element={
           <PrivateRoute>
             <DonorLetter />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/label-maker"
+        element={
+          <PrivateRoute>
+            <LabelMaker />
           </PrivateRoute>
         }
       />

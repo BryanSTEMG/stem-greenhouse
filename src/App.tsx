@@ -1,3 +1,5 @@
+// src/App.tsx
+
 import React, { useContext } from 'react';
 import { HashRouter } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';

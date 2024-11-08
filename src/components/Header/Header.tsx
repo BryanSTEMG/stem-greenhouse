@@ -21,6 +21,9 @@ function Header(): JSX.Element {
           <Link to="/donor-letter" className="mx-2 hover:text-gray-400">
             Donor Letter
           </Link>
+          <Link to="/label-maker" className="mx-2 hover:text-gray-400">
+            Label Maker
+          </Link>
           {/* Add other navigation links if needed */}
         </nav>
       </div>
