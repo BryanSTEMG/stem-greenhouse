@@ -14,6 +14,7 @@ function Header(): JSX.Element {
         {/* Logo and Company Name */}
         <Link to="/" className="flex items-center">
           <img
+          
             src={`${process.env.PUBLIC_URL}/images/logo.png`}
             alt="STEM Greenhouse Logo"
             className="h-8 mr-2"
