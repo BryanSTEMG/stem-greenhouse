@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true, // Skips type checking of declaration files (*.d.ts)
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true, // Allows importing JSON modules
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"

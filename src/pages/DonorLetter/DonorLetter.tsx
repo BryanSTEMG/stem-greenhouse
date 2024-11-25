@@ -7,18 +7,18 @@ import BatchDonorLetter from './BatchDonorLetter';
 
 function DonorLetter(): JSX.Element {
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold">Donor Letter Generator</h1>
-      <div className="mt-4">
+    <div className="min-h-screen bg-[#f5f5f5] py-10">
+      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
+        <h1 className="text-4xl font-bold text-center text-[#0a0002] mb-6">Donor Letter Generator</h1>
         {/* Tab Headers */}
-        <div className="flex border-b">
+        <div className="flex justify-center mb-6 border-b border-gray-200">
           <NavLink
             to="single"
             className={({ isActive }) =>
-              `py-2 px-4 -mb-px border-b-2 font-medium text-sm ${
+              `py-3 px-6 text-lg font-semibold ${
                 isActive
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-b-4 border-[#83b786] text-[#83b786]'
+                  : 'text-gray-600 hover:text-[#83b786] hover:border-b-4 hover:border-[#83b786] transition-colors duration-200'
               }`
             }
           >
@@ -27,10 +27,10 @@ function DonorLetter(): JSX.Element {
           <NavLink
             to="batch"
             className={({ isActive }) =>
-              `py-2 px-4 -mb-px border-b-2 font-medium text-sm ${
+              `py-3 px-6 text-lg font-semibold ${
                 isActive
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-b-4 border-[#83b786] text-[#83b786]'
+                  : 'text-gray-600 hover:text-[#83b786] hover:border-b-4 hover:border-[#83b786] transition-colors duration-200'
               }`
             }
           >
@@ -38,11 +38,11 @@ function DonorLetter(): JSX.Element {
           </NavLink>
         </div>
         {/* Content Area */}
-        <div className="mt-4">
+        <div>
           <Routes>
             <Route path="single" element={<SingleDonorLetter />} />
             <Route path="batch" element={<BatchDonorLetter />} />
-            <Route path="/" element={<p>Please select an option above.</p>} />
+            <Route path="/" element={<p className="text-center text-gray-600">Please select an option above.</p>} />
           </Routes>
         </div>
       </div>

@@ -84,147 +84,150 @@ function SingleDonorLetter(): JSX.Element {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold">Single Donor Letter Generator</h2>
-      <form className="mt-4" onSubmit={handleSubmit}>
+    <div className="bg-white p-8 rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold text-center text-[#0a0002] mb-6">Single Donor Letter Generator</h2>
+      <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Date */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Date</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Date</label>
           <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             required
           />
         </div>
         {/* Name */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Name</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Name</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             placeholder="Enter donor's name"
             required
           />
         </div>
         {/* Address */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Address</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Address</label>
           <input
             type="text"
             name="address"
             value={formData.address}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             placeholder="Enter address"
             required
           />
         </div>
         {/* City */}
-        <div className="mb-4">
-          <label className="block text-gray-700">City</label>
+        <div>
+          <label className="block text-gray-700 font-medium">City</label>
           <input
             type="text"
             name="city"
             value={formData.city}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             placeholder="Enter city"
             required
           />
         </div>
-        {/* State */}
-        <div className="mb-4">
-          <label className="block text-gray-700">State</label>
-          <select
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            required
-          >
-            <option value="">Select a state</option>
-            {stateCodes.map(code => (
-              <option key={code} value={code}>
-                {code}
-              </option>
-            ))}
-          </select>
-        </div>
-        {/* Zip Code */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Zip Code</label>
-          <input
-            type="text"
-            name="zip"
-            value={formData.zip}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            placeholder="Enter zip code"
-            required
-          />
+        {/* State and Zip Code */}
+        <div className="flex space-x-4">
+          <div className="flex-1">
+            <label className="block text-gray-700 font-medium">State</label>
+            <select
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+              required
+            >
+              <option value="">Select a state</option>
+              {stateCodes.map(code => (
+                <option key={code} value={code}>
+                  {code}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1">
+            <label className="block text-gray-700 font-medium">Zip Code</label>
+            <input
+              type="text"
+              name="zip"
+              value={formData.zip}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+              placeholder="Enter zip code"
+              required
+            />
+          </div>
         </div>
         {/* Greeting */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Greeting</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Greeting</label>
           <input
             type="text"
             name="greeting"
             value={formData.greeting}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             placeholder="Enter greeting"
             required
           />
         </div>
         {/* Gift Amount */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Gift Amount</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Gift Amount</label>
           <input
             type="number"
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             placeholder="Enter gift amount"
             required
           />
         </div>
         {/* Date of Donation */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Date of Donation</label>
+        <div>
+          <label className="block text-gray-700 font-medium">Date of Donation</label>
           <input
             type="date"
             name="donationDate"
             value={formData.donationDate}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
             required
           />
         </div>
         {/* Generate Button */}
-        <button
-          type="submit"
-          className={`px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ${
-            isGenerating ? 'cursor-not-allowed' : ''
-          }`}
-          disabled={isGenerating}
-        >
-          {isGenerating ? 'Generating...' : 'Generate Letter'}
-        </button>
+        <div className="text-center">
+          <button
+            type="submit"
+            className={`px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200 ${
+              isGenerating ? 'cursor-not-allowed' : ''
+            }`}
+            disabled={isGenerating}
+          >
+            {isGenerating ? 'Generating...' : 'Generate Letter'}
+          </button>
+        </div>
       </form>
 
       {/* Download PDF Button */}
       {pdfBlob && (
-        <div className="mt-4">
+        <div className="mt-6 text-center">
           <button
             onClick={handleDownload}
-            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            className="px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
           >
             Download PDF
           </button>

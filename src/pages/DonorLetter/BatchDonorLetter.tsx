@@ -131,44 +131,54 @@ function BatchDonorLetter(): JSX.Element {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold">Batch Donor Letter Generator</h2>
-      <div className="mt-4">
-        <p>
+    <div className="bg-white p-8 rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold text-center text-[#0a0002] mb-6">Batch Donor Letter Generator</h2>
+      <div className="text-center">
+        <p className="text-gray-700">
           You can download the template{' '}
-          <a href="/batch_donor_TEMPLATE.xlsx" download className="text-blue-500 underline">
+          <a href="/batch_donor_TEMPLATE.xlsx" download className="text-[#83b786] underline font-medium">
             here
           </a>
           .
         </p>
-        <div className="mt-4">
-          <input
-            type="file"
-            accept=".xlsx, .xls"
-            onChange={handleFileUpload}
-            disabled={isProcessing || uploadedFile !== null}
-          />
+      </div>
+      <div className="mt-6">
+        <div className="flex justify-center items-center">
+          <label className="flex flex-col items-center px-4 py-6 bg-white text-[#83b786] rounded-lg shadow-md tracking-wide uppercase border border-[#83b786] cursor-pointer hover:bg-[#83b786] hover:text-white transition-colors duration-200">
+            <svg className="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M16.88 9.94l-5-5A1 1 0 0010.5 5h-7a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-7a1 1 0 00-.12-.44zM11 9V5.41L15.59 10H12a1 1 0 01-1-1z" />
+            </svg>
+            <span className="mt-2 text-base leading-normal">
+              {uploadedFile ? uploadedFile.name : 'Upload Excel File'}
+            </span>
+            <input
+              type="file"
+              accept=".xlsx, .xls"
+              onChange={handleFileUpload}
+              className="hidden"
+              disabled={isProcessing || uploadedFile !== null}
+            />
+          </label>
         </div>
         {uploadedFile && (
-          <div className="mt-4">
-            <p>File uploaded: {uploadedFile.name}</p>
+          <div className="mt-6 flex justify-center space-x-4">
             <button
               onClick={handleProcessFile}
               disabled={isProcessing}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-2"
+              className="px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
             >
               {isProcessing ? 'Processing...' : 'Process File'}
             </button>
             <button
               onClick={handleClearFile}
               disabled={isProcessing}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              className="px-6 py-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-200"
             >
               Clear File
             </button>
           </div>
         )}
-        {isProcessing && <p className="mt-2 text-blue-500">Processing...</p>}
+        {isProcessing && <p className="mt-4 text-center text-[#83b786]">Processing...</p>}
       </div>
     </div>
   );

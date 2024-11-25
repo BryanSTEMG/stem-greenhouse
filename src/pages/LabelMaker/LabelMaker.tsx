@@ -286,7 +286,7 @@ function LabelMaker(): JSX.Element {
     });
 
     const docBlob = await Packer.toBlob(doc);
-    saveAs(docBlob, 'WORK IN PROGRESS.docx');
+    saveAs(docBlob, 'labels.docx');
   };
 
   const handleNextStep = () => {
@@ -298,60 +298,81 @@ function LabelMaker(): JSX.Element {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Label Maker</h1>
+    <div className="min-h-screen bg-[#f5f5f5] py-10">
+      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
+        <h1 className="text-4xl font-bold text-center text-[#0a0002] mb-6">Label Maker</h1>
 
-      {step === 1 && (
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-700 mb-2">
-            Upload Excel File:
-          </label>
-          <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-        </div>
-      )}
+        {step === 1 && (
+          <div className="mb-8">
+            <div className="flex justify-center items-center">
+              <label className="flex flex-col items-center px-4 py-6 bg-white text-[#83b786] rounded-lg shadow-md tracking-wide uppercase border border-[#83b786] cursor-pointer hover:bg-[#83b786] hover:text-white transition-colors duration-200">
+                <svg
+                  className="w-8 h-8"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M16.88 9.94l-5-5A1 1 0 0010.5 5h-7a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-7a1 1 0 00-.12-.44zM11 9V5.41L15.59 10H12a1 1 0 01-1-1z" />
+                </svg>
+                <span className="mt-2 text-base leading-normal">
+                  Upload Excel File
+                </span>
+                <input
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+        )}
 
-      {step === 2 && headers.length > 0 && (
-        <>
-          <div className="mb-4">
-            <label className="block text-lg font-medium text-gray-700 mb-2">
-              Add a Placeholder:
-            </label>
-            <Select
-              options={availablePlaceholders}
-              value={selectedPlaceholder}
-              onChange={handlePlaceholderSelect}
-              isClearable
-              placeholder="Select a placeholder..."
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-lg font-medium text-gray-700 mb-2">
-              Label Template:
-            </label>
-            <textarea
-              value={template}
-              onChange={handleTemplateChange}
-              rows={6}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Enter your label template using the placeholders above"
-            ></textarea>
-          </div>
-          <div className="flex space-x-4">
-            <button
-              onClick={handlePreviousStep}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-            >
-              Back
-            </button>
-            <button
-              onClick={generateLabels}
-              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            >
-              Generate Labels
-            </button>
-          </div>
-        </>
-      )}
+        {step === 2 && headers.length > 0 && (
+          <>
+            <div className="mb-6">
+              <label className="block text-lg font-medium text-gray-700 mb-2">
+                Add a Placeholder:
+              </label>
+              <Select
+                options={availablePlaceholders}
+                value={selectedPlaceholder}
+                onChange={handlePlaceholderSelect}
+                isClearable
+                placeholder="Select a placeholder..."
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-lg font-medium text-gray-700 mb-2">
+                Label Template:
+              </label>
+              <textarea
+                value={template}
+                onChange={handleTemplateChange}
+                rows={6}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+                placeholder="Enter your label template using the placeholders above"
+              ></textarea>
+            </div>
+            <div className="flex justify-between">
+              <button
+                onClick={handlePreviousStep}
+                className="px-6 py-3 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-200"
+              >
+                Back
+              </button>
+              <button
+                onClick={generateLabels}
+                className="px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
+              >
+                Generate Labels
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

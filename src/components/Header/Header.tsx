@@ -1,39 +1,91 @@
 // src/components/Header/Header.tsx
 
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 function Header(): JSX.Element {
   const { user, signOutUser } = useContext(AuthContext);
 
   return (
-    <header className="bg-gray-800 text-white flex items-center justify-between p-4">
-      {/* Left Side */}
+    <header className="bg-[#0a0002] text-white flex items-center justify-between px-6 py-2 shadow-md">
+      {/* Left Side (Logo and Navigation Links) */}
       <div className="flex items-center">
-        <Link to="/">
-          <span className="text-xl font-bold mr-4">STEM Greenhouse</span>
+        {/* Logo and Company Name */}
+        <Link to="/" className="flex items-center">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
+            alt="STEM Greenhouse Logo"
+            className="h-8 mr-2"
+          />
+          <div className="flex flex-col leading-none">
+            <span className="text-xl font-bold text-[#ffffff]">STEM</span>
+            <span className="text-xl font-bold text-[#ffffff] -mt-1">Greenhouse</span>
+          </div>
         </Link>
-        <nav className="flex items-center">
-          <Link to="/" className="mx-2 hover:text-gray-400">
+        {/* Divider */}
+        <div className="h-10 border-l border-gray-300 mx-4"></div>
+        {/* Navigation Links */}
+        <nav className="flex items-center space-x-4">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
             Home
-          </Link>
-          <Link to="/donor-letter" className="mx-2 hover:text-gray-400">
+          </NavLink>
+          <NavLink
+            to="/donor-letter"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
             Donor Letter
-          </Link>
-          <Link to="/label-maker" className="mx-2 hover:text-gray-400">
+          </NavLink>
+          <NavLink
+            to="/central-letter"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Central Letter
+          </NavLink>
+          <NavLink
+            to="/label-maker"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
             Label Maker
-          </Link>
-          {/* Add other navigation links if needed */}
+          </NavLink>
+          <NavLink
+            to="/order-requests"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Order Requests
+          </NavLink>
         </nav>
       </div>
 
-      {/* Right Side */}
+      {/* Right Side (Sign Out Button) */}
       <div className="flex items-center">
         {user && (
           <button
             onClick={signOutUser}
-            className="mx-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            className="ml-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200"
           >
             Sign Out
           </button>

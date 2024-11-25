@@ -1,3 +1,5 @@
+// src/context/AuthContext.tsx
+
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import {
   getAuth,
@@ -7,7 +9,7 @@ import {
   signOut,
   User,
 } from 'firebase/auth';
-import app from '../firebase';
+import { app } from '../firebase'; // Updated import statement
 
 interface AuthContextProps {
   user: User | null;
@@ -28,7 +30,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  const allowedEmails = ['bryan@stemgreenhouse.org', 'mia@stemgreenhouse.org', 'keli@stemgreenhouse.org']; 
+  const allowedEmails = [
+    'bryan@stemgreenhouse.org',
+    'mia@stemgreenhouse.org',
+    'keli@stemgreenhouse.org',
+  ];
 
   const signInWithGoogle = async () => {
     try {

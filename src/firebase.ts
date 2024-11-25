@@ -1,10 +1,10 @@
 // src/firebase.ts
 
-import { initializeApp } from "firebase/app";
-// Import additional Firebase services as needed
-// import { getAuth } from "firebase/auth";
-// import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
+// Your Firebase configuration object
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -18,10 +18,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Optionally initialize other Firebase services
-// const auth = getAuth(app);
-// const db = getFirestore(app);
+// Initialize Firebase services
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-export default app;
-// Export other services if initialized
-// export { auth, db };
+// Export initialized services
+export { app, db, storage };
