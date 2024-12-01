@@ -1,40 +1,38 @@
 // functions/src/index.ts
 
 import * as functions from "firebase-functions";
-import express from "express";
-import type { Request, Response } from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import multer from "multer";
 import axios from "axios";
 import FormData from "form-data";
 
-interface MulterRequest extends Request {
-  file?: Express.Multer.File;
-}
-
+// Initialize Express app
 const app = express();
 
-// Enable CORS for all origins
-app.use(cors({ origin: true }));
+// Enable CORS for your Netlify domain
+app.use(cors({ origin: "https://your-netlify-site.netlify.app" })); // Replace with your actual Netlify site URL
 
 // Initialize Multer for handling multipart/form-data
 const upload = multer();
 
+// Interface for request with file
+interface MulterRequest extends Request {
+  file?: Express.Multer.File;
+}
+
+// Environment Variables
+const MONDAY_API_TOKEN = functions.config().monday.api_token;
+const MONDAY_ASSIGNEE_ID = parseInt(functions.config().monday.assignee_id || "65908831", 10);
+
 // Endpoint to handle task creation and file upload
 app.post(
   "/createMondayTask",
-  upload.single("file") as express.RequestHandler,
+  upload.single("file"),
   async (req: MulterRequest, res: Response) => {
     try {
       const { formData, boardId, groupId, formType } = req.body;
       const file = req.file;
-
-      // Retrieve environment variables
-      const MONDAY_API_TOKEN = functions.config().monday.api_token;
-      const assigneeId = parseInt(
-        functions.config().monday.assignee_id || "65908831",
-        10
-      );
 
       // Parse formData JSON string
       const parsedFormData = JSON.parse(formData);
@@ -45,7 +43,7 @@ app.post(
       // Prepare the column values
       const columnValues: Record<string, unknown> = {
         person: {
-          personsAndTeams: [{ id: assigneeId, kind: "person" }],
+          personsAndTeams: [{ id: MONDAY_ASSIGNEE_ID, kind: "person" }],
         },
         email__1: {
           email: parsedFormData.email,
@@ -110,12 +108,12 @@ app.post(
       // If there's a file, upload it to the 'files__1' column
       if (file) {
         const addFileMutation = `
-          mutation addFile($file: File!) {
+          mutation ($file: File!) {
             add_file_to_column (
               file: $file,
-              item_id: ${newItemId},
+              item_id: "${newItemId}",
               column_id: "files__1",
-              board_id: ${boardId}
+              board_id: "${boardId}"
             ) {
               id
             }
@@ -124,11 +122,7 @@ app.post(
 
         const formDataFile = new FormData();
         formDataFile.append("query", addFileMutation);
-        formDataFile.append(
-          "variables[file]",
-          file.buffer,
-          file.originalname
-        );
+        formDataFile.append("variables[file]", file.buffer, file.originalname);
 
         const fileUploadResponse = await axios.post(
           "https://api.monday.com/v2/file",
@@ -145,11 +139,8 @@ app.post(
       }
 
       res.status(200).json({ message: "Task created successfully" });
-    } catch (error) {
-      console.error(
-        "Error creating task in Monday.com:",
-        (error as Error).message
-      );
+    } catch (error: any) {
+      console.error("Error creating task in Monday.com:", error.response?.data || error.message);
       res.status(500).json({ error: "Failed to create task" });
     }
   }

@@ -44,18 +44,24 @@ function SupplyOrderForm(): JSX.Element {
     const requestId = uuidv4();
 
     try {
+      // Convert quantity to a number
+      const quantityNumber = parseInt(formData.quantity, 10);
+
       // Save request data to Firestore
       await addDoc(collection(db, 'supplyOrders'), {
         requestId,
         ...formData,
+        quantity: quantityNumber,
         neededBy: Timestamp.fromDate(new Date(formData.neededBy)),
         createdAt: Timestamp.now(),
       });
 
       // Create a task in Monday.com
       await createMondayTask({
-        requestId,
-        formData,
+        formData: {
+          ...formData,
+          quantity: quantityNumber,
+        },
         boardId: MONDAY_SUPPLY_BOARD_ID,
         groupId: MONDAY_SUPPLY_GROUP_ID,
         formType: 'Supply',

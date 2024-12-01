@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
-// import { sendEmail } from '../../utils/emailUtils'; // Email sending is commented out
 import { createMondayTask } from '../../utils/mondayUtils';
 import { db } from '../../firebase';
 
@@ -27,7 +26,7 @@ function CopyOrderForm(): JSX.Element {
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   // Handle file input change
@@ -53,10 +52,20 @@ function CopyOrderForm(): JSX.Element {
         createdAt: Timestamp.now(),
       });
 
+      // Map formData to match expected structure
+      const mondayFormData = {
+        name: formData.name,
+        email: formData.email,
+        suppliesNeeded: formData.copyDetails, // Map copyDetails to suppliesNeeded
+        quantity: parseInt(formData.quantity, 10),
+        neededBy: formData.neededBy,
+        supplyLink: formData.copyLink,
+        additionalInfo: formData.additionalInfo,
+      };
+
       // Create a task in Monday.com
       await createMondayTask({
-        requestId,
-        formData,
+        formData: mondayFormData,
         boardId: MONDAY_COPY_BOARD_ID,
         groupId: MONDAY_COPY_GROUP_ID,
         formType: 'copy',
