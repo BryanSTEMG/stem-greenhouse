@@ -69,7 +69,6 @@ function SupplyOrderForm(): JSX.Element {
       });
 
       alert('Order request submitted successfully!');
-      // Reset the form
       setFormData({
         name: '',
         email: '',
