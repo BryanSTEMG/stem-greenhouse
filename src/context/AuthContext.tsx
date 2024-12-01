@@ -1,5 +1,3 @@
-// src/context/AuthContext.tsx
-
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import {
   getAuth,
@@ -66,8 +64,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  //
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log('Auth state changed:', currentUser);
@@ -80,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, [auth, allowedEmails]); // Added 'allowedEmails' to dependencies
 
   if (loading) {
     console.log('AuthContext: Loading authentication state...');

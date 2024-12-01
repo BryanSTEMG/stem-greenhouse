@@ -1,0 +1,349 @@
+[debug] [2024-12-01T18:22:56.372Z] ----------------------------------------------------------------------
+[debug] [2024-12-01T18:22:56.374Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\bryan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2024-12-01T18:22:56.374Z] CLI Version:   13.27.0
+[debug] [2024-12-01T18:22:56.375Z] Platform:      win32
+[debug] [2024-12-01T18:22:56.375Z] Node Version:  v18.18.0
+[debug] [2024-12-01T18:22:56.385Z] Time:          Sun Dec 01 2024 13:22:56 GMT-0500 (Eastern Standard Time)
+[debug] [2024-12-01T18:22:56.386Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-01T18:22:56.404Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-12-01T18:22:56.545Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-01T18:22:56.545Z] > authorizing via signed-in user (bryan@stemgreenhouse.org)
+[debug] [2024-12-01T18:22:56.545Z] [iam] checking project stem-greenhouse-f21b8 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-12-01T18:22:56.546Z] Checked if tokens are valid: false, expires at: 1732571905782
+[debug] [2024-12-01T18:22:56.547Z] Checked if tokens are valid: false, expires at: 1732571905782
+[debug] [2024-12-01T18:22:56.547Z] > refreshing access token with scopes: []
+[debug] [2024-12-01T18:22:56.548Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-12-01T18:22:56.548Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-12-01T18:22:56.696Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-12-01T18:22:56.696Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-12-01T18:22:56.736Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-12-01T18:22:56.737Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-12-01T18:22:56.760Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions [none]
+[debug] [2024-12-01T18:22:56.760Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:22:56.760Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-12-01T18:22:56.978Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions 200
+[debug] [2024-12-01T18:22:56.979Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-12-01T18:22:56.979Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:22:56.979Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:22:56.979Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/stem-greenhouse-f21b8/serviceAccounts/stem-greenhouse-f21b8@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-12-01T18:22:56.979Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/stem-greenhouse-f21b8/serviceAccounts/stem-greenhouse-f21b8@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-12-01T18:22:57.212Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/stem-greenhouse-f21b8/serviceAccounts/stem-greenhouse-f21b8@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-12-01T18:22:57.212Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/stem-greenhouse-f21b8/serviceAccounts/stem-greenhouse-f21b8@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'stem-greenhouse-f21b8'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] +  functions: Finished running predeploy script. 
+[debug] [2024-12-01T18:23:11.492Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.492Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.492Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 [none]
+[debug] [2024-12-01T18:23:11.725Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 200
+[debug] [2024-12-01T18:23:11.725Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 {"projectNumber":"1087965626819","projectId":"stem-greenhouse-f21b8","lifecycleState":"ACTIVE","name":"stem-greenhouse","labels":{"firebase":"enabled"},"createTime":"2024-10-09T22:10:29.816661Z","parent":{"type":"organization","id":"224449514169"}}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[debug] [2024-12-01T18:23:11.729Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.729Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.729Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.729Z] Checked if tokens are valid: true, expires at: 1733080975737
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2024-12-01T18:23:11.730Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.730Z] Checked if tokens are valid: true, expires at: 1733080975737
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-12-01T18:23:11.731Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.731Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:11.731Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-12-01T18:23:11.731Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:11.733Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-12-01T18:23:11.733Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:11.735Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudbuild.googleapis.com [none]
+[debug] [2024-12-01T18:23:11.735Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudbuild.googleapis.com x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:11.736Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/artifactregistry.googleapis.com [none]
+[debug] [2024-12-01T18:23:11.736Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/artifactregistry.googleapis.com x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:12.123Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudbuild.googleapis.com 200
+[debug] [2024-12-01T18:23:12.123Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudbuild.googleapis.com [omitted]
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-12-01T18:23:12.379Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/runtimeconfig.googleapis.com 200
+[debug] [2024-12-01T18:23:12.379Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-12-01T18:23:12.402Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudfunctions.googleapis.com 200
+[debug] [2024-12-01T18:23:12.402Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-12-01T18:23:12.404Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/artifactregistry.googleapis.com 200
+[debug] [2024-12-01T18:23:12.404Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-12-01T18:23:12.405Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.406Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.406Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/adminSdkConfig [none]
+[debug] [2024-12-01T18:23:12.710Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/adminSdkConfig 200
+[debug] [2024-12-01T18:23:12.711Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/adminSdkConfig {"projectId":"stem-greenhouse-f21b8","storageBucket":"stem-greenhouse-f21b8.firebasestorage.app"}
+[debug] [2024-12-01T18:23:12.711Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.712Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.712Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs [none]
+[debug] [2024-12-01T18:23:12.947Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs 200
+[debug] [2024-12-01T18:23:12.947Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs {"configs":[{"name":"projects/stem-greenhouse-f21b8/configs/monday"}]}
+[debug] [2024-12-01T18:23:12.948Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.948Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:12.948Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables [none]
+[debug] [2024-12-01T18:23:13.133Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables 200
+[debug] [2024-12-01T18:23:13.133Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables {"variables":[{"name":"projects/stem-greenhouse-f21b8/configs/monday/variables/api_token","updateTime":"2024-11-25T19:24:14.030838599Z"},{"name":"projects/stem-greenhouse-f21b8/configs/monday/variables/assignee_id","updateTime":"2024-11-25T19:23:33.937911542Z"}]}
+[debug] [2024-12-01T18:23:13.134Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:13.134Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:13.134Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:13.134Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:13.134Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/api_token [none]
+[debug] [2024-12-01T18:23:13.137Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/assignee_id [none]
+[debug] [2024-12-01T18:23:13.320Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/api_token 200
+[debug] [2024-12-01T18:23:13.320Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/api_token {"name":"projects/stem-greenhouse-f21b8/configs/monday/variables/api_token","updateTime":"2024-11-25T19:24:14.030838599Z","text":"eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjQzNjQ1NjE5MCwiYWFpIjoxMSwidWlkIjo2NTkwODgzMSwiaWFkIjoiMjAyNC0xMS0xNFQwMDo1NTowNy4yMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MjA2NzM1OTYsInJnbiI6InVzZTEifQ.YmtFsAA4ViOIMn1xdZk4Aewe0-OdtxcE0JVYtk8S3KE"}
+[debug] [2024-12-01T18:23:13.324Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/assignee_id 200
+[debug] [2024-12-01T18:23:13.324Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/stem-greenhouse-f21b8/configs/monday/variables/assignee_id {"name":"projects/stem-greenhouse-f21b8/configs/monday/variables/assignee_id","updateTime":"2024-11-25T19:23:33.937911542Z","text":"65908831"}
+[debug] [2024-12-01T18:23:13.326Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-12-01T18:23:21.981Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^5.1.0",
+    "form-data": "^4.0.1",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.17",
+    "@types/form-data": "^2.5.1",
+    "@types/multer": "^1.4.7",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true,
+  "resolutions": {
+    "@types/express": "4.17.17"
+  }
+}
+[debug] [2024-12-01T18:23:21.981Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2024-12-01T18:23:21.982Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-12-01T18:23:21.992Z] Found firebase-functions binary at 'C:\Users\bryan\stem-greenhouse\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8255
+
+[debug] [2024-12-01T18:23:31.487Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2024-12-01T18:23:31.519Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.519Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.520Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/firebaseextensions.googleapis.com [none]
+[debug] [2024-12-01T18:23:31.520Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:31.819Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/firebaseextensions.googleapis.com 200
+[debug] [2024-12-01T18:23:31.819Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/stem-greenhouse-f21b8/services/firebaseextensions.googleapis.com [omitted]
+[info] +  extensions: required API firebaseextensions.googleapis.com is enabled 
+[debug] [2024-12-01T18:23:31.820Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-01T18:23:31.821Z] > authorizing via signed-in user (bryan@stemgreenhouse.org)
+[debug] [2024-12-01T18:23:31.821Z] [iam] checking project stem-greenhouse-f21b8 for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2024-12-01T18:23:31.821Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.821Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.821Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions [none]
+[debug] [2024-12-01T18:23:31.821Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions x-goog-quota-user=projects/stem-greenhouse-f21b8
+[debug] [2024-12-01T18:23:31.821Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2024-12-01T18:23:31.991Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions 200
+[debug] [2024-12-01T18:23:31.991Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2024-12-01T18:23:31.991Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.991Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:31.992Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/stem-greenhouse-f21b8/instances pageSize=100&pageToken=
+[debug] [2024-12-01T18:23:32.327Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/stem-greenhouse-f21b8/instances 200
+[debug] [2024-12-01T18:23:32.327Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/stem-greenhouse-f21b8/instances {}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged C:\Users\bryan\stem-greenhouse\functions (80.98 KB) for uploading 
+[debug] [2024-12-01T18:23:32.387Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:32.387Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:32.388Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/-/functions [none]
+[debug] [2024-12-01T18:23:32.958Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/-/functions 200
+[debug] [2024-12-01T18:23:32.958Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/-/functions {"functions":[{"name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"stem-greenhouse-f21b8@appspot.gserviceaccount.com","updateTime":"2024-11-25T21:00:05.391891124Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"63b93a55083bd60963816f3bfa3b715799729e16"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/45ac9b4a-ce0c-4a2c-a6e3-0561a63317a5.zip","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","ingressSettings":"ALLOW_ALL","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"}]}
+[debug] [2024-12-01T18:23:32.959Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:32.959Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:32.960Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/stem-greenhouse-f21b8/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2024-12-01T18:23:33.427Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/stem-greenhouse-f21b8/locations/-/functions 200
+[debug] [2024-12-01T18:23:33.427Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/stem-greenhouse-f21b8/locations/-/functions {}
+[debug] [2024-12-01T18:23:33.429Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.429Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.430Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 [none]
+[debug] [2024-12-01T18:23:33.599Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 200
+[debug] [2024-12-01T18:23:33.599Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/stem-greenhouse-f21b8 {"projectNumber":"1087965626819","projectId":"stem-greenhouse-f21b8","lifecycleState":"ACTIVE","name":"stem-greenhouse","labels":{"firebase":"enabled"},"createTime":"2024-10-09T22:10:29.816661Z","parent":{"type":"organization","id":"224449514169"}}
+[debug] [2024-12-01T18:23:33.601Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.601Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.601Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/stem-greenhouse-f21b8/billingInfo [none]
+[debug] [2024-12-01T18:23:33.878Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/stem-greenhouse-f21b8/billingInfo 200
+[debug] [2024-12-01T18:23:33.878Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/stem-greenhouse-f21b8/billingInfo {"name":"projects/stem-greenhouse-f21b8/billingInfo","projectId":"stem-greenhouse-f21b8","billingAccountName":"billingAccounts/010990-78A863-944519","billingEnabled":true}
+[debug] [2024-12-01T18:23:33.879Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.879Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:33.880Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2024-12-01T18:23:33.880Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions:generateUploadUrl {}
+[debug] [2024-12-01T18:23:34.423Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2024-12-01T18:23:34.423Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D"}
+[debug] [2024-12-01T18:23:34.424Z] >>> [apiv2][query] PUT https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip GoogleAccessId=service-1087965626819%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D
+[debug] [2024-12-01T18:23:34.424Z] >>> [apiv2][body] PUT https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip [stream]
+[debug] [2024-12-01T18:23:34.724Z] <<< [apiv2][status] PUT https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip 200
+[debug] [2024-12-01T18:23:34.724Z] <<< [apiv2][body] PUT https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip [omitted]
+[info] +  functions: functions folder uploaded successfully 
+[info] i  functions: updating Node.js 18 (1st Gen) function api(us-central1)... 
+[debug] [2024-12-01T18:23:34.730Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:34.730Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:34.730Z] >>> [apiv2][query] PATCH https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions/api updateMask=name%2CsourceUploadUrl%2CentryPoint%2Cruntime%2CdockerRegistry%2Clabels%2ChttpsTrigger.securityLevel%2CminInstances%2CmaxInstances%2CingressSettings%2CenvironmentVariables%2CserviceAccountEmail%2CavailableMemoryMb%2Ctimeout%2CvpcConnector%2CvpcConnectorEgressSettings%2CsourceToken%2CbuildEnvironmentVariables
+[debug] [2024-12-01T18:23:34.730Z] >>> [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions/api {"name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","entryPoint":"api","runtime":"nodejs18","dockerRegistry":"ARTIFACT_REGISTRY","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"httpsTrigger":{"securityLevel":"SECURE_ALWAYS"},"minInstances":null,"maxInstances":null,"ingressSettings":null,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"serviceAccountEmail":null,"availableMemoryMb":null,"timeout":null,"vpcConnector":null,"vpcConnectorEgressSettings":null,"buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}}
+[debug] [2024-12-01T18:23:35.249Z] <<< [apiv2][status] PATCH https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions/api 200
+[debug] [2024-12-01T18:23:35.249Z] <<< [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/stem-greenhouse-f21b8/locations/us-central1/functions/api {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z"}}
+[debug] [2024-12-01T18:23:35.250Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:35.250Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:35.250Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:35.479Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:35.479Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z"}}
+[debug] [2024-12-01T18:23:35.994Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:23:35.995Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:35.995Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:35.995Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:36.197Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:36.197Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z"}}
+[debug] [2024-12-01T18:23:37.211Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:23:37.211Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:37.211Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:37.212Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:37.448Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:37.448Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z","buildId":"3e00eb36-3423-4a72-8a4a-1a35938c45cf","buildName":"projects/1087965626819/locations/us-central1/builds/3e00eb36-3423-4a72-8a4a-1a35938c45cf"}}
+[debug] [2024-12-01T18:23:39.459Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:23:39.459Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:39.459Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:39.459Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:39.620Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:39.620Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z","buildId":"3e00eb36-3423-4a72-8a4a-1a35938c45cf","buildName":"projects/1087965626819/locations/us-central1/builds/3e00eb36-3423-4a72-8a4a-1a35938c45cf"}}
+[debug] [2024-12-01T18:23:43.635Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:23:43.635Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:43.635Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:43.635Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:43.825Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:43.825Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z","buildId":"3e00eb36-3423-4a72-8a4a-1a35938c45cf","buildName":"projects/1087965626819/locations/us-central1/builds/3e00eb36-3423-4a72-8a4a-1a35938c45cf"}}
+[debug] [2024-12-01T18:23:51.827Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:23:51.828Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:51.828Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:23:51.828Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:23:51.990Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:23:51.990Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:23:40Z","buildId":"3e00eb36-3423-4a72-8a4a-1a35938c45cf","buildName":"projects/1087965626819/locations/us-central1/builds/3e00eb36-3423-4a72-8a4a-1a35938c45cf"}}
+[debug] [2024-12-01T18:24:01.999Z] [update-default-us-central1-api] Retrying task index 0
+[debug] [2024-12-01T18:24:01.999Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:01.999Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:01.999Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw [none]
+[debug] [2024-12-01T18:24:02.188Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw 200
+[debug] [2024-12-01T18:24:02.188Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw {"name":"operations/c3RlbS1ncmVlbmhvdXNlLWYyMWI4L3VzLWNlbnRyYWwxL2FwaS80X2lRR0pSdHB2Yw","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api","httpsTrigger":{"url":"https://us-central1-stem-greenhouse-f21b8.cloudfunctions.net/api","securityLevel":"SECURE_ALWAYS"},"status":"OFFLINE","entryPoint":"api","updateTime":"2024-11-25T20:59:55.981Z","versionId":"2","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"3b43e91820a072c15b4c352571e1a6ef17c2c3ea"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-147169341350.us-central1.cloudfunctions.appspot.com/5fa0dc2c-9b4a-4dfd-ae15-0e8f8fa89ffd.zip?GoogleAccessId=service-1087965626819@gcf-admin-robot.iam.gserviceaccount.com&Expires=1733079219&Signature=hoo1g4UIFp4Zxo9VGVg3B4BC0t2l84F3lVjUdGjpPLLLdq6Gu3HveNntWo3gG12OXhpGhhNajSspFJSgBbRO6ggzTkge9skYZ8a8lCqNUi0bBib71YyQGPcYepNvqnlNgnk2Sony5XoQ7eH%2Bk65I1CdNOHvxuiswTfDiK1NNQ3fxkCurshYXPsfQgkbE3wfYX%2BhXXGlWGIj4hP%2Bt9ulZXhrw23eaDN3WZ1%2FXFF0BoNhamBwNrzY2iDL0yIsxC7zloUDCqRuXT4JntAO%2FHYZUl8KtD7Yk1Ow0h8Vp57fbHF6rdBs0E8lQjtBD1Ic2tlqE3L4zD0ZbSBcDbw045AErNw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}","GCLOUD_PROJECT":"stem-greenhouse-f21b8","EVENTARC_CLOUD_EVENT_SOURCE":"projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"},"runtime":"nodejs18","buildId":"e125b0b5-991b-4138-920c-24cb49f5e1d3","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/1087965626819/locations/us-central1/builds/e125b0b5-991b-4138-920c-24cb49f5e1d3","dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{},"buildServiceAccount":"projects/stem-greenhouse-f21b8/serviceAccounts/1087965626819-compute@developer.gserviceaccount.com"},"versionId":"3","updateTime":"2024-12-01T18:24:01Z","buildId":"3e00eb36-3423-4a72-8a4a-1a35938c45cf","buildName":"projects/1087965626819/locations/us-central1/builds/3e00eb36-3423-4a72-8a4a-1a35938c45cf"},"done":true,"error":{"code":3,"message":"Build failed: yarn install v1.22.22\n[1/5] Validating package.json...\n[2/5] Resolving packages...\nwarning Resolution field \"@types/express@4.17.17\" is incompatible with requested version \"@types/express@4.17.3\"\nerror Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.\ninfo Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.; Error ID: 12c8ef4a"}}
+[debug] [2024-12-01T18:24:02.188Z] Got source token undefined for region us-central1
+[error] Build failed: yarn install v1.22.22
+[1/5] Validating package.json...
+[2/5] Resolving packages...
+warning Resolution field "@types/express@4.17.17" is incompatible with requested version "@types/express@4.17.3"
+error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.
+info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.; Error ID: 12c8ef4a
+[debug] [2024-12-01T18:24:02.195Z] Total Function Deployment time: 27463
+[debug] [2024-12-01T18:24:02.195Z] 1 Functions Deployed
+[debug] [2024-12-01T18:24:02.195Z] 1 Functions Errored
+[debug] [2024-12-01T18:24:02.195Z] 0 Function Deployments Aborted
+[debug] [2024-12-01T18:24:02.195Z] Average Function Deployment time: 27462
+[info] 
+[info] Functions deploy had errors with the following functions:
+	api(us-central1)
+[debug] [2024-12-01T18:24:02.346Z] Not printing URL for HTTPS function. Typically this means it didn't match a filter or we failed deployment
+[info] i  functions: cleaning up build files... 
+[debug] [2024-12-01T18:24:02.347Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.347Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.348Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.348Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.348Z] >>> [apiv2][query] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/stem-greenhouse-f21b8/locations/us-central1/repositories/gcf-artifacts/packages/api [none]
+[debug] [2024-12-01T18:24:02.349Z] >>> [apiv2][query] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list [none]
+[debug] [2024-12-01T18:24:02.564Z] <<< [apiv2][status] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/stem-greenhouse-f21b8/locations/us-central1/repositories/gcf-artifacts/packages/api 404
+[debug] [2024-12-01T18:24:02.564Z] <<< [apiv2][body] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/stem-greenhouse-f21b8/locations/us-central1/repositories/gcf-artifacts/packages/api {"error":{"code":404,"message":"Package \"projects/stem-greenhouse-f21b8/locations/us-central1/repositories/gcf-artifacts/packages/api\" was not found.","status":"NOT_FOUND"}}
+[debug] [2024-12-01T18:24:02.957Z] <<< [apiv2][status] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list 404
+[debug] [2024-12-01T18:24:02.957Z] <<< [apiv2][body] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-12-01T18:24:02.958Z] Failed docker command with error  Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[debug] [2024-12-01T18:24:02.958Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.958Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:02.958Z] >>> [apiv2][query] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list [none]
+[debug] [2024-12-01T18:24:03.271Z] <<< [apiv2][status] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list 404
+[debug] [2024-12-01T18:24:03.271Z] <<< [apiv2][body] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-12-01T18:24:03.272Z] Failed docker command with error  Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[debug] [2024-12-01T18:24:03.384Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:03.384Z] Checked if tokens are valid: true, expires at: 1733080975737
+[debug] [2024-12-01T18:24:03.384Z] >>> [apiv2][query] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list [none]
+[debug] [2024-12-01T18:24:03.670Z] <<< [apiv2][status] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list 404
+[debug] [2024-12-01T18:24:03.670Z] <<< [apiv2][body] GET https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-12-01T18:24:03.671Z] Failed docker command with error  Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/stem-greenhouse-f21b8/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[warn] !  functions: Unhandled error cleaning up build images. This could result in a small monthly bill if not corrected. You can attempt to delete these images by redeploying or you can delete them manually at https://console.cloud.google.com/gcr/images/stem-greenhouse-f21b8/us/gcf 
+[debug] [2024-12-01T18:24:03.672Z] Functions deploy failed.
+[debug] [2024-12-01T18:24:03.672Z] {
+  "endpoint": {
+    "id": "api",
+    "project": "stem-greenhouse-f21b8",
+    "region": "us-central1",
+    "entryPoint": "api",
+    "platform": "gcfv1",
+    "runtime": "nodejs18",
+    "httpsTrigger": {},
+    "ingressSettings": null,
+    "availableMemoryMb": null,
+    "serviceAccount": null,
+    "timeoutSeconds": null,
+    "maxInstances": null,
+    "minInstances": null,
+    "vpc": null,
+    "environmentVariables": {
+      "FIREBASE_CONFIG": "{\"projectId\":\"stem-greenhouse-f21b8\",\"storageBucket\":\"stem-greenhouse-f21b8.firebasestorage.app\"}",
+      "GCLOUD_PROJECT": "stem-greenhouse-f21b8",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/stem-greenhouse-f21b8/locations/us-central1/functions/api"
+    },
+    "codebase": "default",
+    "securityLevel": "SECURE_ALWAYS",
+    "targetedByOnly": false,
+    "hash": "3b43e91820a072c15b4c352571e1a6ef17c2c3ea",
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    }
+  },
+  "op": "update",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "exit": 1,
+    "message": "Build failed: yarn install v1.22.22\n[1/5] Validating package.json...\n[2/5] Resolving packages...\nwarning Resolution field \"@types/express@4.17.17\" is incompatible with requested version \"@types/express@4.17.3\"\nerror Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.\ninfo Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.; Error ID: 12c8ef4a",
+    "original": {
+      "code": 3,
+      "message": "Build failed: yarn install v1.22.22\n[1/5] Validating package.json...\n[2/5] Resolving packages...\nwarning Resolution field \"@types/express@4.17.17\" is incompatible with requested version \"@types/express@4.17.3\"\nerror Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.\ninfo Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.; Error ID: 12c8ef4a"
+    },
+    "status": 3,
+    "code": 3
+  }
+}
+[debug] [2024-12-01T18:24:03.785Z] Error: Failed to update function api in region us-central1
+    at C:\Users\bryan\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:52:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Fabricator.updateV1Function (C:\Users\bryan\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:352:32)
+    at async Fabricator.updateEndpoint (C:\Users\bryan\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:152:13)
+    at async handle (C:\Users\bryan\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:89:17)
+[error] 
+[error] Error: There was an error deploying functions
