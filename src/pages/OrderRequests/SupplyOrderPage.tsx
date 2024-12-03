@@ -1,4 +1,4 @@
-// src/pages/OrderRequests/SupplyOrderForm.tsx
+// src/pages/SupplyOrderPage.tsx
 
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,7 +6,7 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { createMondayTask } from '../../utils/mondayUtils';
 import { db } from '../../firebase';
 
-function SupplyOrderForm(): JSX.Element {
+function SupplyOrderPage(): JSX.Element {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -56,16 +56,20 @@ function SupplyOrderForm(): JSX.Element {
         createdAt: Timestamp.now(),
       });
 
+      // Prepare formData for the Monday task
+      const mondayFormData = {
+        ...formData,
+        quantity: quantityNumber,
+        fileName: file ? file.name : null,
+      };
+
       // Create a task in Monday.com
       await createMondayTask({
-        formData: {
-          ...formData,
-          quantity: quantityNumber,
-        },
+        formData: mondayFormData,
         boardId: MONDAY_SUPPLY_BOARD_ID,
         groupId: MONDAY_SUPPLY_GROUP_ID,
         formType: 'Supply',
-        file: file || undefined,
+        file: file || undefined, // Changed from null to undefined
       });
 
       alert('Order request submitted successfully!');
@@ -81,9 +85,6 @@ function SupplyOrderForm(): JSX.Element {
       setFile(null);
     } catch (error: any) {
       console.error('Error submitting order request:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-      }
       alert('An error occurred while submitting your request. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -221,4 +222,4 @@ function SupplyOrderForm(): JSX.Element {
   );
 }
 
-export default SupplyOrderForm;
+export default SupplyOrderPage;
