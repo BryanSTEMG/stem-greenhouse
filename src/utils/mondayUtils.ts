@@ -31,9 +31,12 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
       form.append("file", file);
     }
 
-    console.log("API Base URL:", process.env.REACT_APP_API_BASE_URL);
+    // Determine API Base URL based on environment
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/createMondayTask`, {
+    console.log("API Base URL:", API_BASE_URL);
+
+    const response = await fetch(`${API_BASE_URL}/createMondayTask`, {
       method: "POST",
       body: form,
     });

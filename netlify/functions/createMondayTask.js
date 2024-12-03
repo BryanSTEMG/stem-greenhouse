@@ -7,7 +7,8 @@ const multipart = require('parse-multipart');
 exports.handler = async (event) => {
   // Set up CORS headers
   const headers = {
-    'Access-Control-Allow-Origin': '*', // Change this to your domain in production
+    'Access-Control-Allow-Origin': 'https://stemgreenhouseapp.netlify.app', // Primary Netlify URL
+    'Access-Control-Allow-Origin': 'https://www.stemgreenhouseapp.info', // Custom Domain
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
@@ -84,6 +85,18 @@ exports.handler = async (event) => {
     }
 
     const parsedFormData = typeof formData === 'string' ? JSON.parse(formData) : formData;
+
+    // Validate required fields in parsedFormData
+    const requiredFields = ['name', 'email', 'suppliesNeeded', 'quantity', 'neededBy'];
+    const missingFields = requiredFields.filter(field => !parsedFormData[field]);
+    if (missingFields.length > 0) {
+      console.error('Validation failed: Missing fields:', missingFields);
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: `Validation failed: Missing fields: ${missingFields.join(', ')}` }),
+      };
+    }
 
     // Build the item name
     const itemName = `${parsedFormData.name} - ${formType} Order`;
@@ -242,3 +255,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
+  
