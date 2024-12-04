@@ -36,6 +36,35 @@ function SupplyOrderPage(): JSX.Element {
     }
   };
 
+  // Autofill function
+  const handleAutofill = () => {
+    setFormData({
+      name: 'Bryan',
+      email: 'bryan@stemgreenhouse.org',
+      suppliesNeeded: 'Box',
+      quantity: '10',
+      neededBy: '2024-12-04',
+      supplyLink:
+        'https://www.amazon.com/Kraft-12-1-Corrugated-Handle-Carry/dp/B01MRPPL34/ref=sr_1_1_sspa?crid=ERJVK4LEGCYQ&dib=eyJ2IjoiMSJ9.KB4XqVdQYWem7tGsizBMzMa9sPnlQoFq8cLNz4Erie6d0133f5ldVa7cdOPBW-Oi0fw4Vc0bFc8z3SafDJamXHHTMRMRL5L7jFN5tHBn5FRboWbJeeigZV11QzjqmizCq2PxNHaf2B5-s-EyY12VfLIDyIjLmC4QDAA7At66m5TRc8jtPxs-S0lWwsucaajaii2PMIbN-JlrXiL9t4WqIplJYYVsvk2-PMU73kO-SM9zFTJwVewQQkoxI8z3AXXdzap3T0zj4cP_au7XZDcbm3BIXdDjQOfsiuZst01MJY0.yLCtsi-5AoMQFoMnKS1agvXD1ax5TR1VZ3MWUV3UO6U&dib_tag=se&keywords=box&qid=1731626803&sprefix=bo%2Caps%2C671&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1',
+      additionalInfo: '',
+    });
+    setFile(null);
+  };
+
+  // Clear form function
+  const handleClear = () => {
+    setFormData({
+      name: '',
+      email: '',
+      suppliesNeeded: '',
+      quantity: '',
+      neededBy: '',
+      supplyLink: '',
+      additionalInfo: '',
+    });
+    setFile(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -73,16 +102,7 @@ function SupplyOrderPage(): JSX.Element {
       });
 
       alert('Order request submitted successfully!');
-      setFormData({
-        name: '',
-        email: '',
-        suppliesNeeded: '',
-        quantity: '',
-        neededBy: '',
-        supplyLink: '',
-        additionalInfo: '',
-      });
-      setFile(null);
+      handleClear();
     } catch (error: any) {
       console.error('Error submitting order request:', error);
       alert('An error occurred while submitting your request. Please try again.');
@@ -204,6 +224,23 @@ function SupplyOrderPage(): JSX.Element {
             onChange={handleFileChange}
             className="mt-1 block w-full text-gray-700"
           />
+        </div>
+        {/* Autofill and Clear Buttons */}
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={handleAutofill}
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors duration-200 mr-2"
+          >
+            Autofill Test Data
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-200"
+          >
+            Clear Form
+          </button>
         </div>
         {/* Submit Button */}
         <div className="text-center">

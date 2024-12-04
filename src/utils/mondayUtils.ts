@@ -29,20 +29,22 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
 
     if (file) {
       form.append("file", file);
+      console.log(`Appending file: ${file.name}`);
     }
 
     // Determine API Base URL based on environment
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
     console.log("API Base URL:", API_BASE_URL);
 
     const response = await fetch(`${API_BASE_URL}/createMondayTask`, {
       method: "POST",
       body: form,
+      // Do NOT set the 'Content-Type' header manually when using FormData
     });
 
     if (!response.ok) {
       let errorText = await response.text(); // Get the response as text
+      console.error('Non-OK response:', errorText);
       try {
         // Try to parse as JSON
         const errorData = JSON.parse(errorText);

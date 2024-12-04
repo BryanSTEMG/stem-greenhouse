@@ -5,16 +5,33 @@ const FormData = require('form-data');
 const multipart = require('parse-multipart');
 
 exports.handler = async (event) => {
-  // Set up CORS headers
+  // Define allowed origins
+  const allowedOrigins = [
+    'https://stemgreenhouseapp.netlify.app',
+    'https://www.stemgreenhouseapp.info',
+    'http://localhost:3000',
+    'http://localhost:8888',
+  ];
+
+  // Extract the Origin header from the request
+  const origin = event.headers.origin;
+
+  // Initialize headers with common CORS settings
   const headers = {
-    'Access-Control-Allow-Origin': 'https://stemgreenhouseapp.netlify.app', // Primary Netlify URL
-    'Access-Control-Allow-Origin': 'https://www.stemgreenhouseapp.info', // Custom Domain
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
 
+  // If the request's origin is in the allowed list, set the Access-Control-Allow-Origin header
+  if (allowedOrigins.includes(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin;
+  } else {
+    headers['Access-Control-Allow-Origin'] = 'https://stemgreenhouseapp.netlify.app'; // Fallback to primary Netlify URL
+  }
+
   // Handle CORS preflight request
   if (event.httpMethod === 'OPTIONS') {
+    console.log('Received OPTIONS request');
     return {
       statusCode: 200,
       headers,
@@ -22,7 +39,9 @@ exports.handler = async (event) => {
     };
   }
 
+  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
+    console.error(`Method ${event.httpMethod} Not Allowed`);
     return {
       statusCode: 405,
       headers,
@@ -31,8 +50,17 @@ exports.handler = async (event) => {
   }
 
   try {
+    // Detect if running locally
+    const isLocal = process.env.NETLIFY_LOCAL === 'true';
+    console.log('Is local:', isLocal);
+
     const contentType = event.headers['content-type'] || event.headers['Content-Type'];
-    const isBase64Encoded = event.isBase64Encoded;
+    let isBase64Encoded = event.isBase64Encoded;
+
+    // Override isBase64Encoded to false if running locally
+    if (isLocal) {
+      isBase64Encoded = false;
+    }
 
     console.log('Content-Type:', contentType);
     console.log('isBase64Encoded:', isBase64Encoded);
@@ -45,7 +73,9 @@ exports.handler = async (event) => {
     if (contentType && contentType.includes('multipart/form-data')) {
       // Parse multipart form data
       const boundary = multipart.getBoundary(contentType);
+      console.log('Boundary:', boundary);
       if (!boundary) {
+        console.error('Boundary not found in Content-Type header');
         throw new Error('Boundary not found in Content-Type header');
       }
 
@@ -53,10 +83,15 @@ exports.handler = async (event) => {
         ? Buffer.from(event.body, 'base64')
         : Buffer.from(event.body, 'utf8');
 
+      console.log('Body Buffer Length:', bodyBuffer.length);
+
       const parts = multipart.Parse(bodyBuffer, boundary);
+      console.log('Parsed Parts:', parts);
 
       parts.forEach((part) => {
+        console.log('Processing part:', part.name);
         if (part.filename) {
+          console.log('Found file:', part.filename);
           data.fileContent = part.data.toString('base64'); // Encode file content as base64
           data.fileName = part.filename;
         } else {
@@ -65,15 +100,22 @@ exports.handler = async (event) => {
       });
     } else {
       // Parse JSON body
+      console.log('Parsing JSON body');
       bodyBuffer = isBase64Encoded
         ? Buffer.from(event.body, 'base64')
         : Buffer.from(event.body, 'utf8');
       data = JSON.parse(bodyBuffer.toString());
+      console.log('Parsed data:', data);
     }
 
     const { formData, boardId, groupId, formType } = data;
     fileContent = data.fileContent;
     fileName = data.fileName;
+
+    console.log('Form Data:', formData);
+    console.log('Board ID:', boardId);
+    console.log('Group ID:', groupId);
+    console.log('Form Type:', formType);
 
     if (!formData || !boardId || !groupId || !formType) {
       console.error('Missing required fields:', { formData, boardId, groupId, formType });
@@ -85,6 +127,7 @@ exports.handler = async (event) => {
     }
 
     const parsedFormData = typeof formData === 'string' ? JSON.parse(formData) : formData;
+    console.log('Parsed Form Data:', parsedFormData);
 
     // Validate required fields in parsedFormData
     const requiredFields = ['name', 'email', 'suppliesNeeded', 'quantity', 'neededBy'];
@@ -100,6 +143,7 @@ exports.handler = async (event) => {
 
     // Build the item name
     const itemName = `${parsedFormData.name} - ${formType} Order`;
+    console.log('Item Name:', itemName);
 
     // Prepare the column values
     const columnValues = {
@@ -130,6 +174,7 @@ exports.handler = async (event) => {
 
     // Convert columnValues to JSON string
     const columnValuesStr = JSON.stringify(columnValues);
+    console.log('Column Values:', columnValuesStr);
 
     // Prepare the mutation to create the item
     const createItemMutation = `
@@ -187,9 +232,11 @@ exports.handler = async (event) => {
     }
 
     const newItemId = response.data.data.create_item.id;
+    console.log('New Item ID:', newItemId);
 
     // If there's a file, upload it to the 'files__1' column
     if (fileContent && fileName) {
+      console.log('Uploading file to Monday.com');
       const addFileMutation = `
         mutation ($file: File!) {
           add_file_to_column (
@@ -212,7 +259,7 @@ exports.handler = async (event) => {
       );
 
       // Log the file upload attempt
-      console.log('Uploading file to Monday.com:', fileName);
+      console.log('Uploading file:', fileName);
 
       const fileUploadResponse = await axios.post(
         'https://api.monday.com/v2/file',
@@ -241,6 +288,7 @@ exports.handler = async (event) => {
       }
     }
 
+    console.log('Task created successfully');
     return {
       statusCode: 200,
       headers,
@@ -255,5 +303,3 @@ exports.handler = async (event) => {
     };
   }
 };
-
-  
