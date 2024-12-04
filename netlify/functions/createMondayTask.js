@@ -1,3 +1,4 @@
+// netlify/functions/createMondayTask.js
 
 const axios = require('axios');
 const FormData = require('form-data');
@@ -49,20 +50,8 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Detect if running locally
-    const isLocal = process.env.NETLIFY_LOCAL === 'true';
-    console.log('Is local:', isLocal);
-
     const contentType = event.headers['content-type'] || event.headers['Content-Type'];
-    let isBase64Encoded = event.isBase64Encoded;
-
-    // Override isBase64Encoded to false if running locally
-    if (isLocal) {
-      isBase64Encoded = false;
-    }
-
     console.log('Content-Type:', contentType);
-    console.log('isBase64Encoded:', isBase64Encoded);
 
     let data = {};
     let fileContent = null;
@@ -78,10 +67,8 @@ exports.handler = async (event) => {
         throw new Error('Boundary not found in Content-Type header');
       }
 
-      bodyBuffer = isBase64Encoded
-        ? Buffer.from(event.body, 'base64')
-        : Buffer.from(event.body, 'utf8');
-
+      // Always decode body from base64
+      bodyBuffer = Buffer.from(event.body, 'base64');
       console.log('Body Buffer Length:', bodyBuffer.length);
 
       const parts = multipart.Parse(bodyBuffer, boundary);
@@ -100,7 +87,7 @@ exports.handler = async (event) => {
     } else {
       // Parse JSON body
       console.log('Parsing JSON body');
-      bodyBuffer = isBase64Encoded
+      bodyBuffer = event.isBase64Encoded
         ? Buffer.from(event.body, 'base64')
         : Buffer.from(event.body, 'utf8');
       data = JSON.parse(bodyBuffer.toString());
