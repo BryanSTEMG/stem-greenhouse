@@ -2,7 +2,6 @@
 
 const axios = require('axios');
 const FormData = require('form-data');
-const multipart = require('parse-multipart');
 
 exports.handler = async (event) => {
   // Define allowed origins
@@ -50,58 +49,11 @@ exports.handler = async (event) => {
   }
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'];
-    console.log('Content-Type:', contentType);
-
-    let data = {};
-    let fileContent = null;
-    let fileName = null;
-    let bodyBuffer;
-
-    if (contentType && contentType.includes('multipart/form-data')) {
-      // Parse multipart form data
-      const boundary = multipart.getBoundary(contentType);
-      console.log('Boundary:', boundary);
-      if (!boundary) {
-        console.error('Boundary not found in Content-Type header');
-        throw new Error('Boundary not found in Content-Type header');
-      }
-
-      // Always decode body from base64
-      bodyBuffer = Buffer.from(event.body, 'base64');
-      console.log('Body Buffer Length:', bodyBuffer.length);
-
-      const parts = multipart.Parse(bodyBuffer, boundary);
-      console.log('Parsed Parts:', parts);
-
-      parts.forEach((part) => {
-        console.log('Processing part:', part.name);
-        if (part.filename) {
-          console.log('Found file:', part.filename);
-          data.fileContent = part.data.toString('base64'); // Encode file content as base64
-          data.fileName = part.filename;
-        } else {
-          data[part.name] = part.data.toString();
-        }
-      });
-    } else {
-      // Parse JSON body
-      console.log('Parsing JSON body');
-      bodyBuffer = event.isBase64Encoded
-        ? Buffer.from(event.body, 'base64')
-        : Buffer.from(event.body, 'utf8');
-      data = JSON.parse(bodyBuffer.toString());
-      console.log('Parsed data:', data);
-    }
-
-    const { formData, boardId, groupId, formType } = data;
-    fileContent = data.fileContent;
-    fileName = data.fileName;
-
-    console.log('Form Data:', formData);
-    console.log('Board ID:', boardId);
-    console.log('Group ID:', groupId);
-    console.log('Form Type:', formType);
+    // Parse JSON body
+    console.log('Parsing JSON body');
+    const body = JSON.parse(event.body);
+    const { formData, boardId, groupId, formType, fileContentBase64, fileName } = body;
+    console.log('Parsed body:', body);
 
     if (!formData || !boardId || !groupId || !formType) {
       console.error('Missing required fields:', { formData, boardId, groupId, formType });
@@ -112,23 +64,22 @@ exports.handler = async (event) => {
       };
     }
 
-    const parsedFormData = typeof formData === 'string' ? JSON.parse(formData) : formData;
-    console.log('Parsed Form Data:', parsedFormData);
-
-    // Validate required fields in parsedFormData
+    // Validate required fields in formData
     const requiredFields = ['name', 'email', 'suppliesNeeded', 'quantity', 'neededBy'];
-    const missingFields = requiredFields.filter(field => !parsedFormData[field]);
+    const missingFields = requiredFields.filter((field) => !formData[field]);
     if (missingFields.length > 0) {
       console.error('Validation failed: Missing fields:', missingFields);
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: `Validation failed: Missing fields: ${missingFields.join(', ')}` }),
+        body: JSON.stringify({
+          error: `Validation failed: Missing fields: ${missingFields.join(', ')}`,
+        }),
       };
     }
 
     // Build the item name
-    const itemName = `${parsedFormData.name} - ${formType} Order`;
+    const itemName = `${formData.name} - ${formType} Order`;
     console.log('Item Name:', itemName);
 
     // Prepare the column values
@@ -142,19 +93,19 @@ exports.handler = async (event) => {
         ],
       },
       email__1: {
-        email: parsedFormData.email,
-        text: parsedFormData.email,
+        email: formData.email,
+        text: formData.email,
       },
-      text1__1: parsedFormData.suppliesNeeded,
-      numbers__1: parsedFormData.quantity,
-      date4: { date: parsedFormData.neededBy },
-      text3__1: parsedFormData.additionalInfo,
+      text1__1: formData.suppliesNeeded,
+      numbers__1: formData.quantity,
+      date4: { date: formData.neededBy },
+      text3__1: formData.additionalInfo,
     };
 
-    if (parsedFormData.supplyLink) {
+    if (formData.supplyLink) {
       columnValues.link__1 = {
-        url: parsedFormData.supplyLink,
-        text: parsedFormData.supplyLink,
+        url: formData.supplyLink,
+        text: formData.supplyLink,
       };
     }
 
@@ -221,7 +172,7 @@ exports.handler = async (event) => {
     console.log('New Item ID:', newItemId);
 
     // If there's a file, upload it to the 'files__1' column
-    if (fileContent && fileName) {
+    if (fileContentBase64 && fileName) {
       console.log('Uploading file to Monday.com');
       const addFileMutation = `
         mutation ($file: File!) {
@@ -240,7 +191,7 @@ exports.handler = async (event) => {
       formDataFile.append('query', addFileMutation);
       formDataFile.append(
         'variables[file]',
-        Buffer.from(fileContent, 'base64'),
+        Buffer.from(fileContentBase64, 'base64'),
         fileName
       );
 

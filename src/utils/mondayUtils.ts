@@ -9,28 +9,33 @@ interface CreateMondayTaskParams {
     neededBy: string;
     supplyLink?: string;
     additionalInfo?: string;
-    fileName?: string | null;
   };
   boardId: string;
   groupId: string;
   formType: string;
-  file?: File | undefined;
+  file?: File;
 }
 
 export async function createMondayTask(params: CreateMondayTaskParams): Promise<void> {
   const { formData, boardId, groupId, formType, file } = params;
 
   try {
-    const form = new FormData();
-    form.append("formData", JSON.stringify(formData));
-    form.append("boardId", boardId);
-    form.append("groupId", groupId);
-    form.append("formType", formType);
+    let fileContentBase64 = null;
+    let fileName = null;
 
     if (file) {
-      form.append("file", file);
-      console.log(`Appending file: ${file.name}`);
+      fileContentBase64 = await readFileAsBase64(file);
+      fileName = file.name;
     }
+
+    const payload = {
+      formData,
+      boardId,
+      groupId,
+      formType,
+      fileContentBase64,
+      fileName,
+    };
 
     // Determine API Base URL based on environment
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -38,8 +43,10 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
 
     const response = await fetch(`${API_BASE_URL}/createMondayTask`, {
       method: "POST",
-      body: form,
-      // Do NOT set the 'Content-Type' header manually when using FormData
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -61,4 +68,17 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
     console.error("Error:", error.message);
     throw error;
   }
+}
+
+function readFileAsBase64(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const base64Data = result.split(',')[1]; // Remove data:*/*;base64,
+      resolve(base64Data);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
