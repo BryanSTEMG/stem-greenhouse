@@ -37,7 +37,7 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
       fileName,
     };
 
-    // Determine API Base URL based on environment
+    // Use the API base URL from environment variables
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     console.log("API Base URL:", API_BASE_URL);
 

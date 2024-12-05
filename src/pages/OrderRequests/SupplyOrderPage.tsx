@@ -19,8 +19,10 @@ function SupplyOrderPage(): JSX.Element {
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const MONDAY_SUPPLY_BOARD_ID = '7848780989';
-  const MONDAY_SUPPLY_GROUP_ID = 'topics';
+  // Use environment variables instead of hardcoding
+  const MONDAY_SUPPLY_BOARD_ID = process.env.REACT_APP_MONDAY_SUPPLY_BOARD_ID || '7848780989';
+  const MONDAY_SUPPLY_GROUP_ID = process.env.REACT_APP_MONDAY_SUPPLY_GROUP_ID || 'topics';
+  const FORM_TYPE = 'Supply';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -36,7 +38,7 @@ function SupplyOrderPage(): JSX.Element {
     }
   };
 
-  // Autofill function
+  // Autofill function for testing
   const handleAutofill = () => {
     setFormData({
       name: 'Bryan',
@@ -45,7 +47,7 @@ function SupplyOrderPage(): JSX.Element {
       quantity: '10',
       neededBy: '2024-12-04',
       supplyLink:
-        'https://www.amazon.com/Kraft-12-1-Corrugated-Handle-Carry/dp/B01MRPPL34/ref=sr_1_1_sspa?crid=ERJVK4LEGCYQ&dib=eyJ2IjoiMSJ9.KB4XqVdQYWem7tGsizBMzMa9sPnlQoFq8cLNz4Erie6d0133f5ldVa7cdOPBW-Oi0fw4Vc0bFc8z3SafDJamXHHTMRMRL5L7jFN5tHBn5FRboWbJeeigZV11QzjqmizCq2PxNHaf2B5-s-EyY12VfLIDyIjLmC4QDAA7At66m5TRc8jtPxs-S0lWwsucaajaii2PMIbN-JlrXiL9t4WqIplJYYVsvk2-PMU73kO-SM9zFTJwVewQQkoxI8z3AXXdzap3T0zj4cP_au7XZDcbm3BIXdDjQOfsiuZst01MJY0.yLCtsi-5AoMQFoMnKS1agvXD1ax5TR1VZ3MWUV3UO6U&dib_tag=se&keywords=box&qid=1731626803&sprefix=bo%2Caps%2C671&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1',
+        'https://www.amazon.com/Kraft-12-1-Corrugated-Handle-Carry/dp/B01MRPPL34/ref=sr_1_1_sspa',
       additionalInfo: '',
     });
     setFile(null);
@@ -89,16 +91,16 @@ function SupplyOrderPage(): JSX.Element {
       const mondayFormData = {
         ...formData,
         quantity: quantityNumber,
-        fileName: file ? file.name : null,
+        additionalInfo: formData.additionalInfo || '',
       };
 
-      // Create a task in Monday.com
+      // Create a task in Monday.com via AWS Lambda/API Gateway
       await createMondayTask({
         formData: mondayFormData,
         boardId: MONDAY_SUPPLY_BOARD_ID,
         groupId: MONDAY_SUPPLY_GROUP_ID,
-        formType: 'Supply',
-        file: file || undefined, // Changed from null to undefined
+        formType: FORM_TYPE,
+        file: file || undefined,
       });
 
       alert('Order request submitted successfully!');
