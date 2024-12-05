@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     'bryan@stemgreenhouse.org',
     'mia@stemgreenhouse.org',
     'keli@stemgreenhouse.org',
+    'sonia@stemgreenhouse.org'
   ];
 
   const signInWithGoogle = async () => {
