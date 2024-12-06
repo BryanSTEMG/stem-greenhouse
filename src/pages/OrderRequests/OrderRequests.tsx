@@ -1,7 +1,7 @@
 // src/pages/OrderRequests/OrderRequests.tsx
 
 import React, { useState } from 'react';
-import { NavLink, Routes, Route } from 'react-router-dom';
+import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
 import SupplyOrderForm from './SupplyOrderPage';
 import CopyOrderForm from './CopyOrderPage';
 
@@ -20,10 +20,9 @@ function OrderRequests(): JSX.Element {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Please Read Before Proceeding</h2>
             <p className="text-gray-700 mb-6">
-              Note: Please be clear and detailed on what exactly you need. For example, if you are
-              ordering "Balloons", explain what kind, size, colors, etc., all information that will
-              help us get you exactly what you need. Most importantly, request with time so we can
-              ensure they get to you in time.
+              In order to ensure accuracy and timely delivery, please provide detailed information about your requested items.
+              For example, if you need "Balloons," specify the type, size, colors, and any other relevant details.
+              Give us enough lead time to ensure on-time delivery.
             </p>
             <button
               onClick={handleAcceptDisclaimer}
@@ -64,16 +63,9 @@ function OrderRequests(): JSX.Element {
             {/* Content Area */}
             <div>
               <Routes>
+                <Route path="/" element={<Navigate to="supply-order" replace />} />
                 <Route path="supply-order" element={<SupplyOrderForm />} />
                 <Route path="copy-order" element={<CopyOrderForm />} />
-                <Route
-                  path="/"
-                  element={
-                    <p className="text-center text-gray-600">
-                      Please select an option above.
-                    </p>
-                  }
-                />
               </Routes>
             </div>
           </>

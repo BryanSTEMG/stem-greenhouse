@@ -37,9 +37,9 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
       fileName,
     };
 
-    // Use the API base URL from environment variables
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     console.log("API Base URL:", API_BASE_URL);
+    console.log("Payload:", payload);
 
     const response = await fetch(`${API_BASE_URL}/createMondayTask`, {
       method: "POST",
@@ -49,23 +49,23 @@ export async function createMondayTask(params: CreateMondayTaskParams): Promise<
       body: JSON.stringify(payload),
     });
 
+    console.log("Response Status:", response.status);
+
     if (!response.ok) {
-      let errorText = await response.text(); // Get the response as text
+      let errorText = await response.text(); 
       console.error('Non-OK response:', errorText);
       try {
-        // Try to parse as JSON
         const errorData = JSON.parse(errorText);
         throw new Error(errorData.error || 'Failed to create task');
       } catch (e) {
-        // If parsing fails, throw the raw error text
         throw new Error(errorText);
       }
     }
 
     const data = await response.json();
-    console.log(data.message);
+    console.log("Task creation response message:", data.message);
   } catch (error: any) {
-    console.error("Error:", error.message);
+    console.error("Error creating Monday task:", error.message);
     throw error;
   }
 }
@@ -75,7 +75,7 @@ function readFileAsBase64(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      const base64Data = result.split(',')[1]; // Remove data:*/*;base64,
+      const base64Data = result.split(',')[1];
       resolve(base64Data);
     };
     reader.onerror = reject;

@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { createMondayTask } from '../../utils/mondayUtils';
 import { db } from '../../firebase';
+import { toast } from 'react-toastify';
 
 function CopyOrderForm(): JSX.Element {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ function CopyOrderForm(): JSX.Element {
 
   const MONDAY_COPY_BOARD_ID = '7855775074';
   const MONDAY_COPY_GROUP_ID = 'topics';
+  const FORM_TYPE = 'Copy';
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -29,22 +31,32 @@ function CopyOrderForm(): JSX.Element {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
   };
 
+  const handleClear = () => {
+    setFormData({
+      name: '',
+      email: '',
+      copyDetails: '',
+      quantity: '',
+      neededBy: '',
+      copyLink: '',
+      additionalInfo: '',
+    });
+    setFile(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Generate a unique ID for the request
     const requestId = uuidv4();
 
     try {
-      // Save request data to Firestore
       await addDoc(collection(db, 'copyOrders'), {
         requestId,
         ...formData,
@@ -52,7 +64,7 @@ function CopyOrderForm(): JSX.Element {
         createdAt: Timestamp.now(),
       });
 
-      // Map formData to match expected structure
+      // Map formData to match the Monday.com structure used in createMondayTask
       const mondayFormData = {
         name: formData.name,
         email: formData.email,
@@ -63,43 +75,30 @@ function CopyOrderForm(): JSX.Element {
         additionalInfo: formData.additionalInfo,
       };
 
-      // Create a task in Monday.com
       await createMondayTask({
         formData: mondayFormData,
         boardId: MONDAY_COPY_BOARD_ID,
         groupId: MONDAY_COPY_GROUP_ID,
-        formType: 'copy',
+        formType: FORM_TYPE,
         file: file || undefined,
       });
 
-      alert('Copy request submitted successfully!');
-      // Reset the form
-      setFormData({
-        name: '',
-        email: '',
-        copyDetails: '',
-        quantity: '',
-        neededBy: '',
-        copyLink: '',
-        additionalInfo: '',
-      });
-      setFile(null);
+      toast.success('Copy Order Request Successfully Submitted!');
+      handleClear();
     } catch (error: any) {
       console.error('Error submitting copy request:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-      }
-      alert('An error occurred while submitting your request. Please try again.');
+      toast.error('Error submitting request, please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md">
+    <div className="bg-white p-8 rounded-lg shadow-md relative mt-8">
       <h2 className="text-3xl font-bold text-center text-[#0a0002] mb-6">
         Copy Order Form
       </h2>
+
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Name */}
         <div>
@@ -209,6 +208,18 @@ function CopyOrderForm(): JSX.Element {
             className="mt-1 block w-full text-gray-700"
           />
         </div>
+
+        {/* Clear Form Button */}
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={handleClear}
+            className="px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-colors duration-200"
+          >
+            Clear Form
+          </button>
+        </div>
+
         {/* Submit Button */}
         <div className="text-center">
           <button

@@ -1,10 +1,11 @@
-// src/pages/SupplyOrderPage.tsx
+// src/pages/OrderRequests/SupplyOrderPage.tsx
 
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { createMondayTask } from '../../utils/mondayUtils';
 import { db } from '../../firebase';
+import { toast } from 'react-toastify';
 
 function SupplyOrderPage(): JSX.Element {
   const [formData, setFormData] = useState({
@@ -19,7 +20,6 @@ function SupplyOrderPage(): JSX.Element {
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Use environment variables instead of hardcoding
   const MONDAY_SUPPLY_BOARD_ID = process.env.REACT_APP_MONDAY_SUPPLY_BOARD_ID || '7848780989';
   const MONDAY_SUPPLY_GROUP_ID = process.env.REACT_APP_MONDAY_SUPPLY_GROUP_ID || 'topics';
   const FORM_TYPE = 'Supply';
@@ -31,29 +31,12 @@ function SupplyOrderPage(): JSX.Element {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
   };
 
-  // Autofill function for testing
-  const handleAutofill = () => {
-    setFormData({
-      name: 'Bryan',
-      email: 'bryan@stemgreenhouse.org',
-      suppliesNeeded: 'Box',
-      quantity: '10',
-      neededBy: '2024-12-04',
-      supplyLink:
-        'https://www.amazon.com/Kraft-12-1-Corrugated-Handle-Carry/dp/B01MRPPL34/ref=sr_1_1_sspa',
-      additionalInfo: '',
-    });
-    setFile(null);
-  };
-
-  // Clear form function
   const handleClear = () => {
     setFormData({
       name: '',
@@ -71,14 +54,11 @@ function SupplyOrderPage(): JSX.Element {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Generate a unique ID for the request
     const requestId = uuidv4();
 
     try {
-      // Convert quantity to a number
       const quantityNumber = parseInt(formData.quantity, 10);
 
-      // Save request data to Firestore
       await addDoc(collection(db, 'supplyOrders'), {
         requestId,
         ...formData,
@@ -87,14 +67,12 @@ function SupplyOrderPage(): JSX.Element {
         createdAt: Timestamp.now(),
       });
 
-      // Prepare formData for the Monday task
       const mondayFormData = {
         ...formData,
         quantity: quantityNumber,
         additionalInfo: formData.additionalInfo || '',
       };
 
-      // Create a task in Monday.com via AWS Lambda/API Gateway
       await createMondayTask({
         formData: mondayFormData,
         boardId: MONDAY_SUPPLY_BOARD_ID,
@@ -103,21 +81,22 @@ function SupplyOrderPage(): JSX.Element {
         file: file || undefined,
       });
 
-      alert('Order request submitted successfully!');
+      toast.success('Supply Order Request Successfully Submitted!');
       handleClear();
     } catch (error: any) {
       console.error('Error submitting order request:', error);
-      alert('An error occurred while submitting your request. Please try again.');
+      toast.error('Error submitting request, please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md">
+    <div className="bg-white p-8 rounded-lg shadow-md relative">
       <h2 className="text-3xl font-bold text-center text-[#0a0002] mb-6">
         Supply Order Form
       </h2>
+
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Name */}
         <div>
@@ -227,15 +206,9 @@ function SupplyOrderPage(): JSX.Element {
             className="mt-1 block w-full text-gray-700"
           />
         </div>
-        {/* Autofill and Clear Buttons */}
+
+        {/* Clear Form Button */}
         <div className="text-center">
-          <button
-            type="button"
-            onClick={handleAutofill}
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors duration-200 mr-2"
-          >
-            Autofill Test Data
-          </button>
           <button
             type="button"
             onClick={handleClear}
@@ -244,6 +217,7 @@ function SupplyOrderPage(): JSX.Element {
             Clear Form
           </button>
         </div>
+
         {/* Submit Button */}
         <div className="text-center">
           <button

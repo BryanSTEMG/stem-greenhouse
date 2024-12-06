@@ -77,7 +77,7 @@ def lambda_handler(event, context):
 
         print("Column Values:", columnValues)
 
-        # Update mutation to use ID! for boardId
+        # create_item mutation with boardId as ID!
         create_item_query = """
         mutation ($boardId: ID!, $groupId: String!, $itemName: String!, $columnValues: JSON!) {
             create_item(
@@ -91,16 +91,14 @@ def lambda_handler(event, context):
         }
         """
 
-        # Do not cast boardId to int, treat it as a string
-        # If your REACT_APP_MONDAY_SUPPLY_BOARD_ID is a string, just use it as is.
         variables = {
-            "boardId": str(boardId),  # Ensure boardId is a string
+            "boardId": str(boardId),
             "groupId": groupId,
             "itemName": itemName,
             "columnValues": json.dumps(columnValues)
         }
 
-        print("GraphQL Variables:", variables)
+        print("GraphQL Variables for create_item:", variables)
 
         headers = {
             "Authorization": os.environ['MONDAY_API_TOKEN'],
@@ -114,8 +112,8 @@ def lambda_handler(event, context):
             headers=headers
         )
 
-        print("Response Status Code:", response.status_code)
-        print("Response Text:", response.text)
+        print("create_item Response Status Code:", response.status_code)
+        print("create_item Response Text:", response.text)
 
         if response.status_code != 200 or 'errors' in response.json():
             error_detail = response.json()
@@ -136,16 +134,18 @@ def lambda_handler(event, context):
         newItemId = data['data']['create_item']['id']
         print("New Item ID:", newItemId)
 
-        # Handle file upload if provided
+        # If there's a file, upload it using the add_file_to_column mutation
         if fileContentBase64 and fileName:
-            print("Uploading file to Monday.com")
+            print("Uploading file to Monday.com with updated format (no board_id)")
+
+            # According to Monday.com docs, add_file_to_column now expects:
+            # item_id: ID!, column_id: String!, file: File!
             upload_file_query = """
-            mutation ($file: File!, $itemId: Int!, $columnId: String!, $boardId: Int!) {
+            mutation ($file: File!, $itemId: ID!, $columnId: String!) {
                 add_file_to_column (
                     file: $file,
                     item_id: $itemId,
-                    column_id: $columnId,
-                    board_id: $boardId
+                    column_id: $columnId
                 ) {
                     id
                 }
@@ -153,26 +153,19 @@ def lambda_handler(event, context):
             """
 
             file_bytes = base64.b64decode(fileContentBase64)
-
-            # Log file details
             print("File Bytes Length:", len(file_bytes))
 
             upload_headers = {
                 "Authorization": os.environ['MONDAY_API_TOKEN']
             }
 
-            # Note: board_id for the file upload mutation might still need to be an Int.
-            # According to Monday docs, file upload often still uses Int for board_id. 
-            # If an error occurs here, adjust accordingly.
+            # itemId must be ID! -> use newItemId as is (string)
             files = {
-                'operations': (None, json.dumps({
-                    "query": upload_file_query,
-                    "variables": {
-                        "file": None,
-                        "itemId": int(newItemId),
-                        "columnId": "files__1",
-                        "boardId": int(boardId)  # If this fails, try removing int()
-                    }
+                'query': (None, upload_file_query),
+                'variables': (None, json.dumps({
+                    "file": None,
+                    "itemId": str(newItemId),
+                    "columnId": "files__1"
                 })),
                 'map': (None, json.dumps({"0": ["variables.file"]})),
                 '0': (fileName, file_bytes)
@@ -202,7 +195,7 @@ def lambda_handler(event, context):
                     })
                 }
 
-        print("=== Task created successfully ===")
+        print("=== Task and file uploaded successfully ===")
         return {
             'statusCode': 200,
             'headers': {

@@ -1,4 +1,4 @@
-// src/components/SignIn/SignIn.tsx
+// src/pages/SignIn/SignIn.tsx
 
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -10,32 +10,17 @@ const SignIn: React.FC = () => {
   const { user, signInWithGoogle } = useContext(AuthContext);
 
   const handleSignIn = async () => {
-    console.log('SignIn: Sign In button clicked');
-    try {
-      await signInWithGoogle();
-      // Handle successful sign-in, e.g., redirect or state update
-      console.log('Successfully signed in!');
-    } catch (error) {
-      console.error('SignIn: Error during sign in', error);
-      // Handle sign-in error
-      console.error('Failed to sign in. Please try again.');
-    }
+    await signInWithGoogle();
   };
 
   useEffect(() => {
     const imageUrl = `${process.env.PUBLIC_URL}/images/background.jpg`;
-    console.log('Attempting to load image from:', imageUrl);
     const img = new Image();
     img.src = imageUrl;
-    img.onload = () => console.log('Background image loaded successfully.');
-    img.onerror = () =>
-      console.error(
-        'Error loading background image. Check if the path is correct and the file is accessible.'
-      );
+    // We don't need console logs, just a silent check.
   }, []);
 
   if (user) {
-    console.log('SignIn: User is already authenticated, redirecting to home');
     return <Navigate to="/" />;
   }
 
@@ -62,7 +47,6 @@ const SignIn: React.FC = () => {
           borderRadius: '1rem',
         }}
       >
-        {/* Define Keyframes for Gradient Animation */}
         <style>
           {`
             @keyframes gradient-animation {
@@ -77,18 +61,16 @@ const SignIn: React.FC = () => {
         <div
           className="p-10 rounded-lg shadow-lg w-full max-w-md border border-white/10"
           style={{
-            backgroundColor: '#83b786', // Solid color for inner box
+            backgroundColor: '#83b786',
             borderRadius: '1rem',
           }}
         >
-          {/* Added whitelogo.png Image */}
           <img
             src={`${process.env.PUBLIC_URL}/images/whitelogo.png`}
             alt="STEM Greenhouse Logo"
             className="w-12 h-12 mb-4 mx-auto"
           />
 
-          {/* Heading */}
           <motion.h1
             className="text-3xl font-bold mb-8 text-center text-white"
             initial={{ y: -50, opacity: 0 }}
@@ -98,7 +80,6 @@ const SignIn: React.FC = () => {
             Welcome to STEM Greenhouse
           </motion.h1>
 
-          {/* Sign-In Button */}
           <motion.button
             onClick={handleSignIn}
             className="flex items-center justify-center w-full px-6 py-3 bg-[#0a0002] text-white rounded-lg hover:bg-[#727272] transition-colors"

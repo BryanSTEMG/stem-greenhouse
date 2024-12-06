@@ -14,7 +14,6 @@ function Header(): JSX.Element {
         {/* Logo and Company Name */}
         <Link to="/" className="flex items-center">
           <img
-          
             src={`${process.env.PUBLIC_URL}/images/logo.png`}
             alt="STEM Greenhouse Logo"
             className="h-8 mr-2"
@@ -39,6 +38,26 @@ function Header(): JSX.Element {
             Home
           </NavLink>
           <NavLink
+            to="/order-requests"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Order Requests
+          </NavLink>
+          <NavLink
+            to="/label-maker"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Label Maker
+          </NavLink>
+          <NavLink
             to="/donor-letter"
             className={({ isActive }) =>
               `text-lg font-medium ${
@@ -57,26 +76,6 @@ function Header(): JSX.Element {
             }
           >
             Central Letter
-          </NavLink>
-          <NavLink
-            to="/label-maker"
-            className={({ isActive }) =>
-              `text-lg font-medium ${
-                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
-              }`
-            }
-          >
-            Label Maker
-          </NavLink>
-          <NavLink
-            to="/order-requests"
-            className={({ isActive }) =>
-              `text-lg font-medium ${
-                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
-              }`
-            }
-          >
-            Order Requests
           </NavLink>
         </nav>
       </div>

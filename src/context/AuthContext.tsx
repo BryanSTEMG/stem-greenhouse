@@ -1,3 +1,5 @@
+// src/context/AuthContext.tsx
+
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import {
   getAuth,
@@ -7,7 +9,8 @@ import {
   signOut,
   User,
 } from 'firebase/auth';
-import { app } from '../firebase'; // Updated import statement
+import { app } from '../firebase';
+import { toast } from 'react-toastify';
 
 interface AuthContextProps {
   user: User | null;
@@ -28,47 +31,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  const allowedEmails = [
-    'bryan@stemgreenhouse.org',
-    'mia@stemgreenhouse.org',
-    'keli@stemgreenhouse.org',
-    'sonia@stemgreenhouse.org'
-  ];
-
   const signInWithGoogle = async () => {
     try {
-      console.log('Attempting to sign in with Google');
       const result = await signInWithPopup(auth, provider);
       const signedInUser = result.user;
 
-      if (signedInUser.email && allowedEmails.includes(signedInUser.email)) {
-        console.log('Sign-in successful and email is authorized');
-        // User will be set in onAuthStateChanged
+      if (signedInUser.email && signedInUser.email.endsWith('@stemgreenhouse.org')) {
+        toast.success('You have successfully signed in!');
       } else {
-        console.log('Email is not authorized');
-        // Sign out the user
+        toast.error('Your email domain is not authorized. Please use an @stemgreenhouse.org email.');
         await signOut(auth);
-        alert('Your email is not authorized to access this application.');
       }
     } catch (error) {
-      console.error('Error signing in with Google:', error);
+      toast.error('An error occurred while attempting to sign in. Please try again.');
     }
   };
 
   const signOutUser = async () => {
     try {
-      console.log('Attempting to sign out');
       await signOut(auth);
-      console.log('Sign-out successful');
+      toast.success('You have successfully signed out.');
     } catch (error) {
-      console.error('Error signing out:', error);
+      toast.error('An error occurred while signing out. Please try again.');
     }
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log('Auth state changed:', currentUser);
-      if (currentUser && currentUser.email && allowedEmails.includes(currentUser.email)) {
+      if (currentUser && currentUser.email && currentUser.email.endsWith('@stemgreenhouse.org')) {
         setUser(currentUser);
       } else {
         setUser(null);
@@ -77,10 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, [auth, allowedEmails]); // Added 'allowedEmails' to dependencies
+  }, [auth]);
 
   if (loading) {
-    console.log('AuthContext: Loading authentication state...');
     return <div>Loading...</div>;
   }
 
