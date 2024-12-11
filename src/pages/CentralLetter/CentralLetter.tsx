@@ -6,6 +6,7 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { generate } from '@pdfme/generator';
 import { template } from './source';
+import { PDFDocument } from 'pdf-lib';
 
 function CentralLetter(): JSX.Element {
   const [uploadedExcelFile, setUploadedExcelFile] = useState<File | null>(null);
@@ -119,22 +120,39 @@ function CentralLetter(): JSX.Element {
       const zip = new JSZip();
       console.log('JSZip initialized.');
 
+      // Collect all generated PDFs
+      const pdfByteArrays: Uint8Array[] = [];
+
       // Generate individual PDFs
       for (let i = 0; i < inputs.length; i++) {
         const input = inputs[i];
         console.log(`Generating PDF for ${input.FirstName} (${i + 1}/${inputs.length})`);
         try {
           //@ts-ignore
-          const pdfUint8Array = await generate({ template, inputs: [input] }); // Corrected line
+          const pdfUint8Array = await generate({ template, inputs: [input] });
           console.log(`PDF generated for ${input.FirstName}:`, pdfUint8Array);
           const pdfBlob = new Blob([pdfUint8Array], { type: 'application/pdf' });
           zip.file(`CentralLetter_${i + 1}.pdf`, pdfBlob);
           console.log(`Added CentralLetter_${i + 1}.pdf to ZIP.`);
+          pdfByteArrays.push(pdfUint8Array);
         } catch (pdfError: any) {
           console.error(`Error generating PDF for ${input.FirstName}:`, pdfError);
           alert(`An error occurred while generating PDF for ${input.FirstName}.`);
         }
       }
+
+      // Combine all PDFs into a single PDF
+      console.log('Combining all PDFs into a single PDF...');
+      const combinedPdf = await PDFDocument.create();
+      for (let i = 0; i < pdfByteArrays.length; i++) {
+        const pdfDoc = await PDFDocument.load(pdfByteArrays[i]);
+        const copiedPages = await combinedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        copiedPages.forEach((page) => combinedPdf.addPage(page));
+      }
+      const combinedPdfBytes = await combinedPdf.save();
+      const combinedPdfBlob = new Blob([combinedPdfBytes], { type: 'application/pdf' });
+      zip.file(`CentralLetter_Combined.pdf`, combinedPdfBlob);
+      console.log('Combined PDF added to ZIP.');
 
       // Generate zip file
       console.log('Generating ZIP file...');
