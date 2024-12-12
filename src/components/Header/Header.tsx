@@ -77,6 +77,15 @@ function Header(): JSX.Element {
           >
             Central Letter
           </NavLink>
+          {/* Attendance Link */}
+          <a
+            href="https://access.stemgreenhouse.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg font-medium text-white hover:text-[#83b786] transition-colors duration-200"
+          >
+            Attendance
+          </a>
         </nav>
       </div>
 
