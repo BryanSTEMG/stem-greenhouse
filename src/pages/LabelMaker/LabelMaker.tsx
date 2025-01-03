@@ -17,6 +17,13 @@ import {
 } from 'docx';
 import Select from 'react-select';
 
+// Import toast from react-toastify
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Import JSZip for zipping the PDF and DOCX together
+import JSZip from 'jszip';
+
 function LabelMaker(): JSX.Element {
   const [step, setStep] = useState<number>(1);
   const [headers, setHeaders] = useState<string[]>([]);
@@ -29,44 +36,62 @@ function LabelMaker(): JSX.Element {
     { label: string; value: string } | null
   >(null);
 
+  // States to handle multiple sheets
+  const [workbook, setWorkbook] = useState<XLSX.WorkBook | null>(null);
+  const [sheetNames, setSheetNames] = useState<string[]>([]);
+  const [selectedSheet, setSelectedSheet] = useState<string>('');
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (evt) => {
         const bstr = evt.target?.result;
         const wb = XLSX.read(bstr, { type: 'binary' });
 
-        // Check if there is more than one sheet
-        if (wb.SheetNames.length > 1) {
-          alert(
-            'Error: The Excel file contains multiple sheets. Please upload a file with only one sheet.'
-          );
-          return;
-        }
+        setWorkbook(wb);
+        setSheetNames(wb.SheetNames);
 
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
-
-        // Specify the type parameter here
-        const jsonData = XLSX.utils.sheet_to_json<Record<string, any>>(ws, {
-          defval: '',
-        });
-
-        if (jsonData.length > 0) {
-          const firstRow = jsonData[0];
-          const headers = Object.keys(firstRow);
-          setHeaders(headers);
-          setAvailablePlaceholders(
-            headers.map((header) => ({ label: header, value: `[${header}]` }))
-          );
-          setData(jsonData);
-          setStep(2); // Proceed to next step
+        // If only one sheet, parse immediately
+        if (wb.SheetNames.length === 1) {
+          parseSheetData(wb, wb.SheetNames[0]);
         }
       };
-
       reader.readAsBinaryString(file);
+    }
+  };
+
+  // Parse data from a selected sheet
+  const parseSheetData = (wb: XLSX.WorkBook, sheetName: string) => {
+    try {
+      const ws = wb.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json<Record<string, any>>(ws, {
+        defval: '',
+      });
+
+      if (jsonData.length > 0) {
+        const firstRow = jsonData[0];
+        const headers = Object.keys(firstRow);
+        setHeaders(headers);
+        setAvailablePlaceholders(
+          headers.map((header) => ({ label: header, value: `[${header}]` }))
+        );
+        setData(jsonData);
+        setStep(2);
+      } else {
+        toast.error('No data found in the selected sheet.');
+      }
+    } catch (error) {
+      toast.error('Error parsing the selected sheet.');
+    }
+  };
+
+  // Handle user selecting a sheet (if multiple)
+  const handleSheetSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const chosenSheet = e.target.value;
+    setSelectedSheet(chosenSheet);
+    if (workbook && chosenSheet) {
+      parseSheetData(workbook, chosenSheet);
     }
   };
 
@@ -77,46 +102,46 @@ function LabelMaker(): JSX.Element {
   const handlePlaceholderSelect = (selectedOption: any) => {
     if (selectedOption) {
       setTemplate((prev) => prev + selectedOption.value);
-      setSelectedPlaceholder(null); // Reset the selected placeholder
+      setSelectedPlaceholder(null); // Reset
     }
   };
 
   const generateLabels = async () => {
-    // Common variables
+    // Common label settings
     const labelsPerRow = 3;
     const labelsPerColumn = 10;
     const labelWidthInches = 2.625;
     const labelHeightInches = 1;
 
-    // Generate PDF
+    // ---------------------------------
+    // 1) Generate PDF
+    // ---------------------------------
     const pdfDoc = await PDFDocument.create();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-    const labelWidth = labelWidthInches * 72; // 1 inch = 72 points
+    const labelWidth = labelWidthInches * 72; // 72 pts = 1 in
     const labelHeight = labelHeightInches * 72;
-    const marginLeft = 0.21975 * 72; // Left margin
-    const marginTop = 0.5 * 72; // Top margin
-    const horizontalSpacing = 0.125 * 72; // Space between labels horizontally
-    const verticalSpacing = 0 * 72; // Space between labels vertically
+    const marginLeft = 0.21975 * 72;
+    const marginTop = 0.5 * 72;
+    const horizontalSpacing = 0.125 * 72;
+    const verticalSpacing = 0 * 72;
     const fontSize = 10;
 
     let labelIndex = 0;
-
     while (labelIndex < data.length) {
-      const page = pdfDoc.addPage([612, 792]); // Standard Letter size in points
+      const page = pdfDoc.addPage([612, 792]);
+      let placedAtLeastOneLabel = false;
 
       for (let row = 0; row < labelsPerColumn; row++) {
         for (let col = 0; col < labelsPerRow; col++) {
+          if (labelIndex >= data.length) break;
+          placedAtLeastOneLabel = true;
+
           const x = marginLeft + col * (labelWidth + horizontalSpacing);
           const y = 792 - marginTop - row * (labelHeight + verticalSpacing);
 
-          if (labelIndex >= data.length) {
-            break;
-          }
-
           const rowData = data[labelIndex];
           let labelText = template;
-
           headers.forEach((header) => {
             const placeholder = `[${header}]`;
             const value = rowData[header] || '';
@@ -124,10 +149,8 @@ function LabelMaker(): JSX.Element {
           });
 
           const textLines = labelText.split('\n');
-
-          let textY = y - 15; // Adjust text position within the label
-
-          textLines.forEach((line) => {
+          let textY = y - 15; // Shift text down inside label
+          for (const line of textLines) {
             page.drawText(line, {
               x: x + 5,
               y: textY,
@@ -137,128 +160,66 @@ function LabelMaker(): JSX.Element {
               maxWidth: labelWidth - 10,
             });
             textY -= fontSize + 2;
-          });
+          }
 
           labelIndex++;
-
-          if (labelIndex >= data.length) {
-            break;
-          }
+          if (labelIndex >= data.length) break;
         }
+        if (labelIndex >= data.length) break;
+      }
 
-        if (labelIndex >= data.length) {
-          break;
-        }
+      if (!placedAtLeastOneLabel) {
+        // If page was created but no labels placed, remove it
+        pdfDoc.removePage(pdfDoc.getPageCount() - 1);
       }
     }
 
+    // Save PDF as bytes
     const pdfBytes = await pdfDoc.save();
-    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-    saveAs(pdfBlob, 'labels.pdf');
 
-    // Generate DOCX
-    const sections = [];
-    const labelWidthTwips = labelWidthInches * 1440; // 1 inch = 1440 twips
-    const labelHeightTwips = labelHeightInches * 1440;
+    // ---------------------------------
+    // 2) Generate DOCX
+    // ---------------------------------
+    // Build the table row-by-row, each row holds up to 3 cells
+    const tableRows: TableRow[] = [];
 
-    let labelCount = 0;
+    // We'll accumulate cells in a local array first
+    let currentRowCells: TableCell[] = [];
 
-    while (labelCount < data.length) {
-      const tableRows: TableRow[] = [];
-
-      for (let row = 0; row < labelsPerColumn; row++) {
-        const tableCells: TableCell[] = [];
-        for (let col = 0; col < labelsPerRow; col++) {
-          if (labelCount >= data.length) {
-            break;
-          }
-
-          const rowData = data[labelCount];
-          let labelText = template;
-
-          headers.forEach((header) => {
-            const placeholder = `[${header}]`;
-            const value = rowData[header] || '';
-            labelText = labelText.replaceAll(placeholder, value);
-          });
-
-          const labelParagraphs = labelText
-            .split('\n')
-            .map((line) => new Paragraph(line));
-
-          const cell = new TableCell({
-            children: labelParagraphs,
-            width: {
-              size: labelWidthTwips,
-              type: WidthType.DXA,
+    for (let i = 0; i < data.length; i++) {
+      // Whenever i % labelsPerRow === 0, we start a new row
+      if (i % labelsPerRow === 0 && i !== 0) {
+        // Push the completed row
+        tableRows.push(
+          new TableRow({
+            children: currentRowCells,
+            height: {
+              value: labelHeightInches * 1440, // EXACT in twips
+              rule: HeightRule.EXACT,
             },
-            margins: {
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-            },
-            borders: {
-              top: { style: BorderStyle.NONE },
-              bottom: { style: BorderStyle.NONE },
-              left: { style: BorderStyle.NONE },
-              right: { style: BorderStyle.NONE },
-            },
-          });
-
-          tableCells.push(cell);
-
-          labelCount++;
-
-          if (labelCount >= data.length) {
-            break;
-          }
-        }
-
-        // Fill empty cells if necessary
-        while (tableCells.length < labelsPerRow) {
-          const emptyCell = new TableCell({
-            children: [],
-            width: {
-              size: labelWidthTwips,
-              type: WidthType.DXA,
-            },
-            margins: {
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-            },
-            borders: {
-              top: { style: BorderStyle.NONE },
-              bottom: { style: BorderStyle.NONE },
-              left: { style: BorderStyle.NONE },
-              right: { style: BorderStyle.NONE },
-            },
-          });
-          tableCells.push(emptyCell);
-        }
-
-        const tableRow = new TableRow({
-          children: tableCells,
-          height: {
-            value: labelHeightTwips,
-            rule: HeightRule.EXACT,
-          },
-        });
-
-        tableRows.push(tableRow);
-
-        if (labelCount >= data.length) {
-          break;
-        }
+          })
+        );
+        currentRowCells = []; // reset
       }
 
-      const table = new Table({
-        rows: tableRows,
+      const rowData = data[i];
+      let labelText = template;
+      headers.forEach((header) => {
+        const placeholder = `[${header}]`;
+        const value = rowData[header] || '';
+        labelText = labelText.replaceAll(placeholder, value);
+      });
+
+      const labelParagraphs = labelText
+        .split('\n')
+        .map((line) => new Paragraph(line));
+
+      // Create cell with no borders
+      const cell = new TableCell({
+        children: labelParagraphs,
         width: {
-          size: 100,
-          type: WidthType.PERCENTAGE,
+          size: labelWidthInches * 1440, 
+          type: WidthType.DXA,
         },
         margins: {
           top: 0,
@@ -267,34 +228,107 @@ function LabelMaker(): JSX.Element {
           right: 0,
         },
         borders: {
-          top: { style: BorderStyle.NONE },
-          bottom: { style: BorderStyle.NONE },
-          left: { style: BorderStyle.NONE },
-          right: { style: BorderStyle.NONE },
+          top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
         },
       });
 
-      // Add this table as a section
-      sections.push({
-        properties: {},
-        children: [table],
-      });
+      currentRowCells.push(cell);
     }
 
-    const doc = new Document({
-      sections: sections,
+    // If there's a partially filled row left
+    if (currentRowCells.length > 0) {
+      // Fill the row until it has exactly labelsPerRow cells
+      while (currentRowCells.length < labelsPerRow) {
+        currentRowCells.push(
+          new TableCell({
+            children: [],
+            width: {
+              size: labelWidthInches * 1440,
+              type: WidthType.DXA,
+            },
+            margins: {
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            },
+            borders: {
+              top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+              bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+              left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+              right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+            },
+          })
+        );
+      }
+
+      tableRows.push(
+        new TableRow({
+          children: currentRowCells,
+          height: {
+            value: labelHeightInches * 1440,
+            rule: HeightRule.EXACT,
+          },
+        })
+      );
+    }
+
+    // Build the table
+    const table = new Table({
+      rows: tableRows,
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+      margins: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+      borders: {
+        top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        insideVertical: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      },
     });
 
+    // One section with the table
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [table],
+        },
+      ],
+    });
+
+    // DOCX as Blob
     const docBlob = await Packer.toBlob(doc);
-    saveAs(docBlob, 'labels.docx');
+
+    // ---------------------------------
+    // 3) Zip the PDF & DOCX together
+    // ---------------------------------
+    const zip = new JSZip();
+    zip.file('labels.pdf', pdfBytes);
+    zip.file('labels.docx', docBlob);
+
+    const zipContent = await zip.generateAsync({ type: 'blob' });
+    saveAs(zipContent, 'labels.zip');
   };
 
   const handleNextStep = () => {
-    setStep(step + 1);
+    setStep((prev) => prev + 1);
   };
 
   const handlePreviousStep = () => {
-    setStep(step - 1);
+    setStep((prev) => prev - 1);
   };
 
   return (
@@ -304,7 +338,7 @@ function LabelMaker(): JSX.Element {
 
         {step === 1 && (
           <div className="mb-8">
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center mb-6">
               <label className="flex flex-col items-center px-4 py-6 bg-white text-[#83b786] rounded-lg shadow-md tracking-wide uppercase border border-[#83b786] cursor-pointer hover:bg-[#83b786] hover:text-white transition-colors duration-200">
                 <svg
                   className="w-8 h-8"
@@ -314,9 +348,7 @@ function LabelMaker(): JSX.Element {
                 >
                   <path d="M16.88 9.94l-5-5A1 1 0 0010.5 5h-7a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1v-7a1 1 0 00-.12-.44zM11 9V5.41L15.59 10H12a1 1 0 01-1-1z" />
                 </svg>
-                <span className="mt-2 text-base leading-normal">
-                  Upload Excel File
-                </span>
+                <span className="mt-2 text-base leading-normal">Upload Excel File</span>
                 <input
                   type="file"
                   accept=".xlsx, .xls"
@@ -325,6 +357,27 @@ function LabelMaker(): JSX.Element {
                 />
               </label>
             </div>
+
+            {/* Multiple sheets dropdown */}
+            {sheetNames.length > 1 && (
+              <div className="mb-6">
+                <label className="block text-lg font-medium text-gray-700 mb-2">
+                  Select a Sheet:
+                </label>
+                <select
+                  value={selectedSheet}
+                  onChange={handleSheetSelection}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+                >
+                  <option value="">-- Choose a Sheet --</option>
+                  {sheetNames.map((sheetName) => (
+                    <option key={sheetName} value={sheetName}>
+                      {sheetName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         )}
 
@@ -344,6 +397,7 @@ function LabelMaker(): JSX.Element {
                 classNamePrefix="react-select"
               />
             </div>
+
             <div className="mb-6">
               <label className="block text-lg font-medium text-gray-700 mb-2">
                 Label Template:
@@ -354,8 +408,9 @@ function LabelMaker(): JSX.Element {
                 rows={6}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#83b786]"
                 placeholder="Enter your label template using the placeholders above"
-              ></textarea>
+              />
             </div>
+
             <div className="flex justify-between">
               <button
                 onClick={handlePreviousStep}
