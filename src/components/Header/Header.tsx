@@ -23,8 +23,10 @@ function Header(): JSX.Element {
             <span className="text-xl font-bold text-[#ffffff] -mt-1">Greenhouse</span>
           </div>
         </Link>
+
         {/* Divider */}
         <div className="h-10 border-l border-gray-300 mx-4"></div>
+
         {/* Navigation Links */}
         <nav className="flex items-center space-x-4">
           <NavLink
@@ -86,6 +88,18 @@ function Header(): JSX.Element {
           >
             Attendance
           </a>
+
+          {/* New link to your Survey Processor */}
+          <NavLink
+            to="/survey-processor"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Survey Processor
+          </NavLink>
         </nav>
       </div>
 
