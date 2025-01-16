@@ -42,8 +42,8 @@ function SingleDonorLetter(): JSX.Element {
     setIsGenerating(true);
 
     // Format dates
-    const formattedDate = format(new Date(formData.date), 'MMMM d, yyyy');
-    const formattedDonationDate = format(new Date(formData.donationDate), 'MMMM d, yyyy');
+    const formattedDate = format(new Date(formData.date + 'T00:00:00'), 'MMMM d, yyyy');
+    const formattedDonationDate = format(new Date(formData.donationDate + 'T00:00:00'), 'MMMM d, yyyy');
 
     // Prepare inputs for PDF generation
     const inputs = [
