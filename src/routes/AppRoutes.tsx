@@ -6,10 +6,11 @@ import Home from '../pages/Home/Home';
 import DonorLetter from '../pages/DonorLetter/DonorLetter';
 import CentralLetter from '../pages/CentralLetter/CentralLetter';
 import LabelMaker from '../pages/LabelMaker/LabelMaker';
-import OrderRequests from '../pages/OrderRequests/OrderRequests'; 
+import OrderRequests from '../pages/OrderRequests/OrderRequests';
 import SignIn from '../pages/SignIn/SignIn';
 import PrivateRoute from './PrivateRoute';
-import SurveyProcessorPage from '../pages/DataEntry/ParticipantSurveyProcessorPage'; 
+import SurveyProcessorPage from '../pages/DataEntry/ParticipantSurveyProcessorPage';
+import SalesforcePage from '../pages/Salesforce/SalesforcePage'; // <-- NEW
 
 function AppRoutes(): JSX.Element {
   return (
@@ -33,6 +34,7 @@ function AppRoutes(): JSX.Element {
           </PrivateRoute>
         }
       />
+
       <Route
         path="/central-letter"
         element={
@@ -41,6 +43,7 @@ function AppRoutes(): JSX.Element {
           </PrivateRoute>
         }
       />
+
       <Route
         path="/label-maker"
         element={
@@ -49,6 +52,7 @@ function AppRoutes(): JSX.Element {
           </PrivateRoute>
         }
       />
+
       <Route
         path="/order-requests/*"
         element={
@@ -58,7 +62,7 @@ function AppRoutes(): JSX.Element {
         }
       />
 
-      {/* 2) Add your new route for Survey Processor */}
+      {/* Existing Survey Processor */}
       <Route
         path="/survey-processor"
         element={
@@ -68,7 +72,15 @@ function AppRoutes(): JSX.Element {
         }
       />
 
-      {/* Other routes can be added here */}
+      {/* NEW: Salesforce Upload Page */}
+      <Route
+        path="/salesforce"
+        element={
+          <PrivateRoute>
+            <SalesforcePage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

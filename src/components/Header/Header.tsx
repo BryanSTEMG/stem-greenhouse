@@ -89,7 +89,7 @@ function Header(): JSX.Element {
             Attendance
           </a>
 
-          {/* New link to your Survey Processor */}
+          {/* Survey Processor
           <NavLink
             to="/survey-processor"
             className={({ isActive }) =>
@@ -99,6 +99,18 @@ function Header(): JSX.Element {
             }
           >
             Survey Processor
+          </NavLink> */}
+
+          {/* NEW Salesforce Link */}
+          <NavLink
+            to="/salesforce"
+            className={({ isActive }) =>
+              `text-lg font-medium ${
+                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+              }`
+            }
+          >
+            Salesforce
           </NavLink>
         </nav>
       </div>
