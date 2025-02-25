@@ -22,8 +22,18 @@ function SalesforcePage(): JSX.Element {
   // Checkbox state to control the "Continue" button
   const [disclaimerChecked, setDisclaimerChecked] = useState<boolean>(false);
 
-  // File upload state (for demonstration; not yet implemented)
+  // File upload state
   const [file, setFile] = useState<File | null>(null);
+
+  /**
+   * REPLACE this with your actual API Gateway endpoint + route.
+   * For example:
+   *   "https://6vs9aydei8.execute-api.us-east-2.amazonaws.com/default/salesforceUploadFunction"
+   * Make sure that path matches exactly what you have in API Gateway:
+   *   Stage name:     "default"
+   *   Route path:     "/salesforceUploadFunction"
+   */
+  const API_URL = 'https://6vs9aydei8.execute-api.us-east-2.amazonaws.com/default/salesforceUploadFunction';
 
   // 1) Check whether the user has permission based on their email.
   //    If their email is not in ALLOWED_SALESFORCE_USERS, show an access denied screen.
@@ -107,7 +117,7 @@ function SalesforcePage(): JSX.Element {
               If you do not have the official Excel template, you can download it below:
             </p>
             <a
-              href={`${process.env.PUBLIC_URL}/public/Salesforce_Applications_Template.xlsx`}
+              href={`${process.env.PUBLIC_URL}/Salesforce_Applications_Template.xlsx`}
               download
               className="inline-block px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
             >
@@ -144,22 +154,55 @@ function SalesforcePage(): JSX.Element {
     );
   }
 
-  // 3) If disclaimers are accepted, show upload UI.
-  //    For now, we only collect the file and do nothing on submit.
+  // If disclaimers are accepted, show upload UI.
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
       toast.error('Please select a file to upload.');
       return;
     }
-    // For now, we do not actually process or send anything:
-    toast.info('File upload functionality not yet implemented. Stay tuned!');
+
+    // Convert the selected file to base64
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        if (!evt.target?.result) {
+          toast.error('Could not read the file data.');
+          return;
+        }
+
+        // The result is a Data URL, we need to strip off the prefix
+        const dataUrl = evt.target.result.toString();
+        // Data URL looks like: "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,AAA..."
+        const fileBase64 = dataUrl.replace(/^data:.*;base64,/, '');
+
+        // POST to your API Gateway endpoint
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ fileBase64 }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          toast.success('Upload successful: ' + (result.message || 'No message returned.'));
+        } else {
+          toast.error('Upload failed: ' + (result.error || 'Unknown error'));
+        }
+      } catch (err: any) {
+        toast.error('Error contacting server: ' + err.message);
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   return (
