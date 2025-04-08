@@ -1,17 +1,18 @@
 // src/components/Header/Header.tsx
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { FaChevronDown } from 'react-icons/fa';
 
 function Header(): JSX.Element {
   const { user, signOutUser } = useContext(AuthContext);
+  const [isLettersOpen, setIsLettersOpen] = useState(false);
 
   return (
     <header className="bg-[#0a0002] text-white flex items-center justify-between px-6 py-2 shadow-md">
-      {/* Left Side (Logo and Navigation Links) */}
+      {/* Left Side: Logo + Nav */}
       <div className="flex items-center">
-        {/* Logo and Company Name */}
         <Link to="/" className="flex items-center">
           <img
             src={`${process.env.PUBLIC_URL}/images/logo.png`}
@@ -19,15 +20,13 @@ function Header(): JSX.Element {
             className="h-8 mr-2"
           />
           <div className="flex flex-col leading-none">
-            <span className="text-xl font-bold text-[#ffffff]">STEM</span>
-            <span className="text-xl font-bold text-[#ffffff] -mt-1">Greenhouse</span>
+            <span className="text-xl font-bold text-white">STEM</span>
+            <span className="text-xl font-bold text-white -mt-1">Greenhouse</span>
           </div>
         </Link>
 
-        {/* Divider */}
         <div className="h-10 border-l border-gray-300 mx-4"></div>
 
-        {/* Navigation Links */}
         <nav className="flex items-center space-x-4">
           <NavLink
             to="/"
@@ -59,27 +58,93 @@ function Header(): JSX.Element {
           >
             Label Maker
           </NavLink>
-          <NavLink
-            to="/donor-letter"
-            className={({ isActive }) =>
-              `text-lg font-medium ${
-                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
-              }`
-            }
-          >
-            Donor Letter
-          </NavLink>
-          <NavLink
-            to="/central-letter"
-            className={({ isActive }) =>
-              `text-lg font-medium ${
-                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
-              }`
-            }
-          >
-            Central Letter
-          </NavLink>
-          {/* Attendance Link */}
+
+          {/* Letters Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setIsLettersOpen(!isLettersOpen)}
+              className="flex items-center text-lg font-medium text-white hover:text-[#83b786]"
+            >
+              Letters
+              <FaChevronDown
+                className={`ml-1 transition-transform duration-200 ${
+                  isLettersOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+            {isLettersOpen && (
+              <div className="absolute left-0 mt-2 w-56 bg-[#0a0002] rounded-md shadow-lg py-1 z-50">
+                <NavLink
+                  to="/donor-letter"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  Donor Letter (Old)
+                </NavLink>
+                <NavLink
+                  to="/central-letter"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  Central Letter
+                </NavLink>
+                <NavLink
+                  to="/birthday-fundraiser"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  Birthday Fundraiser
+                </NavLink>
+                <NavLink
+                  to="/donor-letter-new"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  Donor Letter (New)
+                </NavLink>
+                <NavLink
+                  to="/new-hire"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  New Hire Letter
+                </NavLink>
+                <NavLink
+                  to="/job-acceptance"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
+                    }`
+                  }
+                  onClick={() => setIsLettersOpen(false)}
+                >
+                  Job Acceptance Letter
+                </NavLink>
+              </div>
+            )}
+          </div>
+
+          {/* Attendance */}
           <a
             href="https://access.stemgreenhouse.org/"
             target="_blank"
@@ -89,19 +154,7 @@ function Header(): JSX.Element {
             Attendance
           </a>
 
-          {/* Survey Processor
-          <NavLink
-            to="/survey-processor"
-            className={({ isActive }) =>
-              `text-lg font-medium ${
-                isActive ? 'text-[#83b786]' : 'text-white hover:text-[#83b786]'
-              }`
-            }
-          >
-            Survey Processor
-          </NavLink> */}
-
-          {/* NEW Salesforce Link */}
+          {/* Salesforce */}
           <NavLink
             to="/salesforce"
             className={({ isActive }) =>
@@ -115,7 +168,7 @@ function Header(): JSX.Element {
         </nav>
       </div>
 
-      {/* Right Side (Sign Out Button) */}
+      {/* Right Side: Sign Out */}
       <div className="flex items-center">
         {user && (
           <button
