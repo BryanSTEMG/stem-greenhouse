@@ -1,16 +1,24 @@
 // src/routes/AppRoutes.tsx
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+// Pages (existing) ...
 import Home from '../pages/Home/Home';
-import DonorLetter from '../pages/DonorLetter/DonorLetter';
+import DonorLetter from '../pages/DonorLetter/DonorLetter'; 
+import DonorLetterNewPage from '../pages/Letters/DonorLetter/DonorLetterNewPage';
 import CentralLetter from '../pages/CentralLetter/CentralLetter';
 import LabelMaker from '../pages/LabelMaker/LabelMaker';
 import OrderRequests from '../pages/OrderRequests/OrderRequests';
 import SignIn from '../pages/SignIn/SignIn';
 import PrivateRoute from './PrivateRoute';
 import SurveyProcessorPage from '../pages/DataEntry/ParticipantSurveyProcessorPage';
-import SalesforcePage from '../pages/Salesforce/SalesforcePage'; // <-- NEW
+import SalesforcePage from '../pages/Salesforce/SalesforcePage';
+import BirthdayFundraiserPage from '../pages/Letters/BirthdayFundraiser/BirthdayFundraiserPage';
+
+// New Hire Page
+import NewHirePage from '../pages/Letters/NewHire/NewHirePage';
+// Job Acceptance Page
+import JobAcceptancePage from '../pages/Letters/JobAcceptance/JobAcceptancePage';
 
 function AppRoutes(): JSX.Element {
   return (
@@ -26,6 +34,7 @@ function AppRoutes(): JSX.Element {
         }
       />
 
+      {/* Old Donor Letter */}
       <Route
         path="/donor-letter/*"
         element={
@@ -35,6 +44,17 @@ function AppRoutes(): JSX.Element {
         }
       />
 
+      {/* New Donor Letter (Docx) */}
+      <Route
+        path="/donor-letter-new/*"
+        element={
+          <PrivateRoute>
+            <DonorLetterNewPage />
+          </PrivateRoute>
+        }
+      />
+
+      {/* Central Letter */}
       <Route
         path="/central-letter"
         element={
@@ -44,6 +64,17 @@ function AppRoutes(): JSX.Element {
         }
       />
 
+      {/* Birthday Fundraiser */}
+      <Route
+        path="/birthday-fundraiser"
+        element={
+          <PrivateRoute>
+            <BirthdayFundraiserPage />
+          </PrivateRoute>
+        }
+      />
+
+      {/* Label Maker */}
       <Route
         path="/label-maker"
         element={
@@ -53,6 +84,7 @@ function AppRoutes(): JSX.Element {
         }
       />
 
+      {/* Order Requests */}
       <Route
         path="/order-requests/*"
         element={
@@ -62,7 +94,7 @@ function AppRoutes(): JSX.Element {
         }
       />
 
-      {/* Existing Survey Processor */}
+      {/* Survey Processor */}
       <Route
         path="/survey-processor"
         element={
@@ -72,12 +104,32 @@ function AppRoutes(): JSX.Element {
         }
       />
 
-      {/* NEW: Salesforce Upload Page */}
+      {/* Salesforce */}
       <Route
         path="/salesforce"
         element={
           <PrivateRoute>
             <SalesforcePage />
+          </PrivateRoute>
+        }
+      />
+
+      {/* New Hire */}
+      <Route
+        path="/new-hire"
+        element={
+          <PrivateRoute>
+            <NewHirePage />
+          </PrivateRoute>
+        }
+      />
+
+      {/* Job Acceptance */}
+      <Route
+        path="/job-acceptance"
+        element={
+          <PrivateRoute>
+            <JobAcceptancePage />
           </PrivateRoute>
         }
       />
