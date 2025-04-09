@@ -10,42 +10,49 @@ import {
   ImageRun,
 } from 'docx';
 import { NewHireFormData } from './NewHireForm';
-
-// If you have embedded images for header/footer, store them here
-// or import from some "imageData.ts" file. Example:
 import { headerImageBase64, footerImageBase64 } from '../imageData';
 
 interface NewHireOutputProps {
   formData: NewHireFormData;
 }
 
-const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
-  // Convert points to half-points
-  const ptToHalfPt = (pt: number) => pt * 2;
+/** Convert points to half-points (used by the docx library). */
+const ptToHalfPt = (pt: number) => pt * 2;
 
-  // Format date to "Mon DD, YYYY" (ensuring comma after day if missing)
-  const formatLetterDate = (rawDateStr: string): string => {
-    const parsed = new Date(rawDateStr);
-    if (isNaN(parsed.getTime())) return rawDateStr;
+/**
+ * Format date to "Mon DD, YYYY" ensuring a comma after the day if missing.
+ */
+const formatLetterDate = (rawDateStr: string): string => {
+  const parsed = new Date(rawDateStr);
+  if (isNaN(parsed.getTime())) return rawDateStr;
 
-    let formatted = parsed.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    });
+  let formatted = parsed.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  });
 
-    if (!formatted.includes(',')) {
-      const parts = formatted.split(' ');
-      if (parts.length === 3) {
-        formatted = `${parts[0]} ${parts[1]}, ${parts[2]}`;
-      }
+  if (!formatted.includes(',')) {
+    const parts = formatted.split(' ');
+    if (parts.length === 3) {
+      formatted = `${parts[0]} ${parts[1]}, ${parts[2]}`;
     }
-    return formatted;
-  };
+  }
+  return formatted;
+};
 
-  const generateDoc = () => {
+/** Sanitize a candidate name for safe file naming. */
+const sanitizeFilename = (name: string): string => {
+  return name.trim() === '' ? 'unknown' : name.replace(/[^a-z0-9]/gi, '_');
+};
+
+const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
+  const generateDoc = async () => {
+    // Format relevant dates
     const letterDateStr = formatLetterDate(formData.date);
     const responseDeadlineStr = formatLetterDate(formData.responseDeadline);
+
+    // City, state, zip block
     const addressBlock = `${formData.city}, ${formData.state} ${formData.zip}`;
 
     // Build paragraphs for the letter
@@ -62,7 +69,6 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
             text: letterDateStr,
             font: 'PT Sans',
             size: ptToHalfPt(11),
-            bold: false,
           }),
         ],
       }),
@@ -136,8 +142,9 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
           new TextRun({
             text:
               `This role is a ${formData.employmentType} position and reports to ${formData.supervisorName}, ` +
-              `with a start date of ${formData.startDate}. Your starting salary will be ${formData.salary} ` +
-              `per ${formData.payPeriod} with an expectation of ${formData.weeklyHours} hours per week.`,
+              `with a start date of ${formatLetterDate(formData.startDate)}. ` +
+              `Your starting salary will be ${formData.salary} per ${formData.payPeriod} ` +
+              `with an expectation of ${formData.weeklyHours} hours per week.`,
             font: 'PT Sans',
             size: ptToHalfPt(10),
           }),
@@ -218,7 +225,7 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
             size: ptToHalfPt(10),
           }),
           new TextRun({
-            text: responseDeadlineStr,
+            text: formatLetterDate(formData.responseDeadline),
             font: 'PT Sans',
             bold: true,
             size: ptToHalfPt(10),
@@ -256,7 +263,7 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
         ],
       }),
 
-      // 4 gaps
+      // Four gaps
       new Paragraph({}),
       new Paragraph({}),
       new Paragraph({}),
@@ -292,7 +299,7 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
       }),
     ];
 
-    // Build the doc with header/footer images
+    // Build the DOCX with header/footer images.
     const doc = new DocxDocument({
       sections: [
         {
@@ -343,10 +350,15 @@ const NewHireOutput: React.FC<NewHireOutputProps> = ({ formData }) => {
       ],
     });
 
-    // Generate blob and download
-    Packer.toBlob(doc).then((blob) => {
-      saveAs(blob, 'stem_offer_letter.docx');
-    });
+    // Convert the DOCX to a Blob
+    const docxBlob = await Packer.toBlob(doc);
+
+    // Sanitize the candidate's name to create a meaningful file name.
+    const sanitizedCandidateName = sanitizeFilename(formData.candidateName);
+    const fileName = `New_Hire_Offer_${sanitizedCandidateName}.docx`;
+
+    // Download the DOCX directly.
+    saveAs(docxBlob, fileName);
   };
 
   return (

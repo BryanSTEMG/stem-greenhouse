@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 /**
  * Data interface describing fields for the Job Acceptance form.
@@ -20,11 +20,11 @@ export interface JobAcceptanceFormProps {
  */
 const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => {
   const [formData, setFormData] = useState<JobAcceptanceFormData>({
-    candidateName: 'Jane Doe',
-    jobTitle: 'STEM Education Coordinator',
-    startDate: '2025-04-21',
-    salary: '45,000',
-    payPeriod: 'year',
+    candidateName: '',
+    jobTitle: '',
+    startDate: '',
+    salary: '',
+    payPeriod: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,7 +42,9 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         <input
           type="text"
           value={formData.candidateName}
-          onChange={(e) => setFormData({ ...formData, candidateName: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, candidateName: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />
       </div>
@@ -55,7 +57,9 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         <input
           type="text"
           value={formData.jobTitle}
-          onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, jobTitle: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />
       </div>
@@ -68,7 +72,9 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         <input
           type="date"
           value={formData.startDate}
-          onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, startDate: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />
       </div>
@@ -81,7 +87,9 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         <input
           type="text"
           value={formData.salary}
-          onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, salary: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />
       </div>
@@ -93,9 +101,12 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         </label>
         <select
           value={formData.payPeriod}
-          onChange={(e) => setFormData({ ...formData, payPeriod: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, payPeriod: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         >
+          <option value="">Select pay period</option>
           <option value="hour">Hour</option>
           <option value="year">Year</option>
         </select>
@@ -106,7 +117,7 @@ const JobAcceptanceForm: React.FC<JobAcceptanceFormProps> = ({ onGenerate }) => 
         type="submit"
         className="w-full bg-[#83b786] text-white font-semibold py-3 rounded-md hover:bg-[#72a376] transition-colors duration-200"
       >
-        Generate Acceptance Form
+        Generate Letter
       </button>
     </form>
   );

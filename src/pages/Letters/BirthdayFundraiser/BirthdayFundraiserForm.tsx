@@ -51,13 +51,13 @@ const BirthdayFundraiserForm: React.FC<BirthdayFundraiserFormProps> = ({ onGener
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700">Letter Date (e.g. 3.28.2025):</label>
+          <label className="block text-gray-700">Letter Date:</label>
           <input
             type="text"
             value={letterDate}
             onChange={(e) => setLetterDate(e.target.value)}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-[#83b786]"
-            placeholder="e.g. 3.28.2025"
+            placeholder="Enter letter date"
           />
         </div>
         <div className="mb-4">
@@ -111,7 +111,7 @@ const BirthdayFundraiserForm: React.FC<BirthdayFundraiserFormProps> = ({ onGener
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Donation Honor (e.g. "Grace Clark"):</label>
+          <label className="block text-gray-700">Donation Honor:</label>
           <input
             type="text"
             value={donationHonor}
@@ -121,7 +121,7 @@ const BirthdayFundraiserForm: React.FC<BirthdayFundraiserFormProps> = ({ onGener
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Receipt Date (for bottom of letter):</label>
+          <label className="block text-gray-700">Receipt Date:</label>
           <input
             type="date"
             value={receiptDate}
@@ -130,7 +130,7 @@ const BirthdayFundraiserForm: React.FC<BirthdayFundraiserFormProps> = ({ onGener
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700">Receipt Amount (for bottom of letter):</label>
+          <label className="block text-gray-700">Receipt Amount:</label>
           <input
             type="text"
             value={receiptAmount}

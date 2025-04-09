@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 /**
  * Interface describing the fields for the New Hire Offer Letter.
@@ -20,15 +20,13 @@ export interface NewHireFormData {
   responseDeadline: string;
 }
 
-interface NewHireFormProps {
-  onSubmit: (data: NewHireFormData) => void;
-}
-
 /**
  * Format a date string (ISO) into "MMM dd yyyy" (no commas).
  */
 const formatDate = (dateString: string) => {
+  if (!dateString) return '';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return '';
   return date
     .toLocaleDateString('en-US', {
       month: 'short',
@@ -38,35 +36,42 @@ const formatDate = (dateString: string) => {
     .replace(',', '');
 };
 
+interface NewHireFormProps {
+  onSubmit: (data: NewHireFormData) => void;
+}
+
+// Complete list of U.S. state codes.
+const stateCodes = [
+  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+];
+
 const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
   /**
-   * Default form state. Using your "testing" defaults.
-   * We transform them to "MMM dd yyyy" format for display.
+   * Default form state with empty values.
    */
   const [formData, setFormData] = useState<NewHireFormData>({
-    date: formatDate(new Date().toISOString()),
-    candidateName: 'Jane Doe',
-    candidateAddress: '123 STEM Lane',
-    city: 'Grand Rapids',
-    state: 'MI',
-    zip: '49507',
-    jobTitle: 'STEM Education Coordinator',
-    employmentType: 'full-time',
-    supervisorName: 'Alex Johnson',
-    startDate: formatDate(
-      new Date(Date.now() + 12096e5).toISOString() // +2 weeks
-    ),
-    salary: '45,000',
-    payPeriod: 'year',
-    weeklyHours: '40',
-    responseDeadline: formatDate(
-      new Date(Date.now() + 6048e5).toISOString() // +1 week
-    ),
+    date: '',
+    candidateName: '',
+    candidateAddress: '',
+    city: '',
+    state: '',
+    zip: '',
+    jobTitle: '',
+    employmentType: '',
+    supervisorName: '',
+    startDate: '',
+    salary: '',
+    payPeriod: '',
+    weeklyHours: '',
+    responseDeadline: '',
   });
 
   /**
-   * When user clicks "Generate Offer Letter"
-   * we pass the formatted data up.
+   * When user clicks "Generate Letter" we pass the formatted data up.
    */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,11 +85,12 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
   };
 
   /**
-   * Convert "MMM dd yyyy" -> "YYYY-MM-DD" for <input type="date" />
+   * Convert a date string to "YYYY-MM-DD" for <input type="date" />.
    */
   const getDateInputValue = (dateStr: string) => {
-    // Attempt to parse the date
+    if (!dateStr) return '';
     const parsed = new Date(dateStr);
+    if (isNaN(parsed.getTime())) return '';
     return parsed.toISOString().split('T')[0];
   };
 
@@ -130,10 +136,7 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
           value={formData.candidateAddress}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              candidateAddress: e.target.value,
-            })
+            setFormData({ ...formData, candidateAddress: e.target.value })
           }
         />
       </div>
@@ -167,13 +170,12 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
               setFormData({ ...formData, state: e.target.value })
             }
           >
-            <option value="MI">MI</option>
-            {/* Add other states as needed */}
-            <option value="IL">IL</option>
-            <option value="OH">OH</option>
-            <option value="IN">IN</option>
-            <option value="WI">WI</option>
-            {/* etc. */}
+            <option value="">Select a state</option>
+            {stateCodes.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -217,12 +219,10 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
           value={formData.employmentType}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              employmentType: e.target.value,
-            })
+            setFormData({ ...formData, employmentType: e.target.value })
           }
         >
+          <option value="">Select employment type</option>
           <option value="full-time">Full-time</option>
           <option value="part-time">Part-time</option>
         </select>
@@ -238,10 +238,7 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
           value={formData.supervisorName}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              supervisorName: e.target.value,
-            })
+            setFormData({ ...formData, supervisorName: e.target.value })
           }
         />
       </div>
@@ -287,6 +284,7 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
               setFormData({ ...formData, payPeriod: e.target.value })
             }
           >
+            <option value="">Select pay period</option>
             <option value="hour">Hour</option>
             <option value="year">Year</option>
           </select>
@@ -331,7 +329,7 @@ const NewHireForm: React.FC<NewHireFormProps> = ({ onSubmit }) => {
         type="submit"
         className="w-full bg-[#83b786] text-white font-semibold py-3 rounded-md hover:bg-[#72a376] transition-colors duration-200"
       >
-        Generate Offer Letter
+        Generate Letter
       </button>
     </form>
   );
