@@ -251,7 +251,7 @@ const BirthdayFundraiserOutput: React.FC<BirthdayFundraiserOutputProps> = ({ for
         },
         children: [
           new TextRun({
-            text: 'Thank you again for celebrating ',
+            text: 'Thank you again for celebrating',
             font: 'PT Sans',
             size: ptToHalfPoints(11),
           }),

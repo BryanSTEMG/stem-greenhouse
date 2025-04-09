@@ -14,7 +14,7 @@ export interface DonorLetterFormData {
   donationDate: string;
 }
 
-interface DonorLetterFormProps {
+export interface DonorLetterFormProps {
   onSubmit: (data: DonorLetterFormData) => void;
 }
 
@@ -33,18 +33,26 @@ const formatDate = (date: Date) => {
 
 const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<DonorLetterFormData>({
-    letterDate: formatDate(new Date()),
-    donorName: 'John and Jane Doe',
-    address: '123 Main Street',
-    city: 'Springfield',
-    state: 'IL',
-    zip: '62704',
-    donationAmount: '500.00',
-    donationDate: formatDate(new Date()),
+    letterDate: '',
+    donorName: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    donationAmount: '',
+    donationDate: '',
   });
 
+  const stateCodes = [
+    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+    'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+  ];
+
   /**
-   * Parse the ISO date from the input (YYYY-MM-DD) into local format
+   * Parse the ISO date from the input (YYYY-MM-DD) into local format.
    */
   const handleDateChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -73,7 +81,11 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
         </label>
         <input
           type="date"
-          value={new Date(formData.letterDate).toISOString().split('T')[0]}
+          value={
+            formData.letterDate
+              ? new Date(formData.letterDate).toISOString().split('T')[0]
+              : ''
+          }
           onChange={(e) => handleDateChange(e, 'letterDate')}
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />
@@ -91,7 +103,7 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
             setFormData({ ...formData, donorName: e.target.value })
           }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
-          placeholder="e.g. John and Jane Doe"
+          placeholder="Enter donor name(s)"
         />
       </div>
 
@@ -107,10 +119,11 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
             setFormData({ ...formData, address: e.target.value })
           }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+          placeholder="Enter street address"
         />
       </div>
 
-      {/* City, State, Zip */}
+      {/* City, State, ZIP */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         {/* City */}
         <div>
@@ -124,7 +137,7 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
               setFormData({ ...formData, city: e.target.value })
             }
             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
-            placeholder="Springfield"
+            placeholder="Enter city"
           />
         </div>
 
@@ -140,22 +153,12 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
             }
             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
           >
-            {/* Add other states as needed */}
-            <option value="AL">AL</option>
-            <option value="AK">AK</option>
-            <option value="AZ">AZ</option>
-            <option value="AR">AR</option>
-            <option value="CA">CA</option>
-            <option value="CO">CO</option>
-            <option value="CT">CT</option>
-            <option value="DE">DE</option>
-            <option value="FL">FL</option>
-            <option value="GA">GA</option>
-            <option value="HI">HI</option>
-            <option value="ID">ID</option>
-            <option value="IL">IL</option>
-            <option value="IN">IN</option>
-            {/* ... etc. */}
+            <option value="">Select state</option>
+            {stateCodes.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -171,7 +174,7 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
               setFormData({ ...formData, zip: e.target.value })
             }
             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
-            placeholder="62704"
+            placeholder="Enter ZIP code"
           />
         </div>
       </div>
@@ -189,7 +192,7 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
             setFormData({ ...formData, donationAmount: e.target.value })
           }
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
-          placeholder="500.00"
+          placeholder="Enter donation amount"
         />
       </div>
 
@@ -200,7 +203,11 @@ const DonorLetterForm: React.FC<DonorLetterFormProps> = ({ onSubmit }) => {
         </label>
         <input
           type="date"
-          value={new Date(formData.donationDate).toISOString().split('T')[0]}
+          value={
+            formData.donationDate
+              ? new Date(formData.donationDate).toISOString().split('T')[0]
+              : ''
+          }
           onChange={(e) => handleDateChange(e, 'donationDate')}
           className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
         />

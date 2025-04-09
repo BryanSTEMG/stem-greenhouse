@@ -1,5 +1,7 @@
 import React from 'react';
 import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
+import { jsPDF } from 'jspdf';
 import {
   Document as DocxDocument,
   Packer,
@@ -39,6 +41,11 @@ const JobAcceptLetterOutput: React.FC<JobAcceptLetterOutputProps> = ({ formData 
       }
     }
     return formatted;
+  };
+
+  // Helper function to sanitize candidate name for filename
+  const sanitizeFilename = (name: string): string => {
+    return name.trim() === "" ? "unknown" : name.replace(/[^a-z0-9]/gi, '_');
   };
 
   const generateDoc = () => {
@@ -177,7 +184,6 @@ const JobAcceptLetterOutput: React.FC<JobAcceptLetterOutputProps> = ({ formData 
     const pGap7 = new Paragraph({});
 
     // Insert the table image, sized at 6" wide x 1.5" tall, aligned right
-    // docx uses raw pixel values, approximately 96px per inch => 576 wide, 144 tall
     const tableImageParagraph = new Paragraph({
       alignment: AlignmentType.RIGHT,
       children: [
@@ -259,8 +265,39 @@ const JobAcceptLetterOutput: React.FC<JobAcceptLetterOutputProps> = ({ formData 
       ],
     });
 
-    Packer.toBlob(doc).then((blob) => {
-      saveAs(blob, 'job_acceptance_form.docx');
+    // Build PDF content as a simple text version of the letter
+    const pdfContent =
+      "STEM GREENHOUSE JOB OFFER ACCEPTANCE FORM\n\n" +
+      "Name: " + formData.candidateName + "\n" +
+      "Position: " + formData.jobTitle + "\n" +
+      "Start Date: " + startDateFormatted + "\n" +
+      "Salary: " + formData.salary + " per " + formData.payPeriod + "\n\n" +
+      "Employment Terms: At-will employment, consistent with applicable laws.\n\n" +
+      "Acknowledgment & Acceptance\n" +
+      "By signing below, I acknowledge that I have read and understand the terms of this offer. " +
+      "I accept the position of " + formData.jobTitle + " at STEM Greenhouse under the conditions outlined in my offer letter.\n\n" +
+      "I acknowledge that my employment is contingent upon successfully completing all required pre-employment screenings, including a background check. " +
+      "I confirm that I meet all legal requirements to work with children and, if applicable, to volunteer within Grand Rapids Public Schools (GRPS).\n\n" +
+      "I understand that my employment is at-will, meaning either I or STEM Greenhouse may end the employment relationship at any time, consistent with applicable laws.\n\n";
+
+    // Generate docx blob and then create pdf and zip files
+    Packer.toBlob(doc).then((docxBlob) => {
+      // Generate PDF using jsPDF
+      const pdfDoc = new jsPDF();
+      pdfDoc.setFontSize(11);
+      const lines = pdfDoc.splitTextToSize(pdfContent, 180);
+      pdfDoc.text(lines, 10, 10);
+      const pdfBlob = pdfDoc.output("blob");
+
+      // Create a zip file and add both docx and pdf files
+      const zip = new JSZip();
+      const sanitizedCandidateName = sanitizeFilename(formData.candidateName);
+      const zipFileName = `Job_Acceptance_${sanitizedCandidateName}.zip`;
+      zip.file(`Job_Acceptance_${sanitizedCandidateName}.docx`, docxBlob);
+      zip.file(`Job_Acceptance_${sanitizedCandidateName}.pdf`, pdfBlob);
+      zip.generateAsync({ type: "blob" }).then((content) => {
+        saveAs(content, zipFileName);
+      });
     });
   };
 
