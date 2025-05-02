@@ -15,21 +15,60 @@ function OrderRequests(): JSX.Element {
   return (
     <div className="min-h-screen bg-[#f5f5f5] py-10">
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
-        <h1 className="text-4xl font-bold text-center text-[#0a0002] mb-6">Order Requests</h1>
+        <h1 className="text-4xl font-bold text-center text-[#0a0002] mb-6">
+          Order Requests
+        </h1>
+
         {!disclaimerAccepted ? (
           <div>
             <h2 className="text-2xl font-semibold mb-4">Please Read Before Proceeding</h2>
-            <p className="text-gray-700 mb-6">
-              In order to ensure accuracy and timely delivery, please provide detailed information about your requested items.
-              For example, if you need "Balloons," specify the type, size, colors, and any other relevant details.
-              Give us enough lead time to ensure on-time delivery.
-            </p>
-            <button
-              onClick={handleAcceptDisclaimer}
-              className="px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
-            >
-              Accept and Continue
-            </button>
+
+            {/* Copy Order Instructions */}
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-[#83b786] mb-2">Copy Order Guidelines</h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                <li>
+                  <strong>Notice:</strong> Minimum <em>3 days</em> lead time is required.
+                </li>
+                <li>
+                  <strong>Pick-up:</strong> Copies will be ready at the work table by the downstairs fridge.
+                </li>
+                <li>
+                  <strong>Special Instructions:</strong> If you need staples, double-sided printing, specific page ranges, etc., please note them clearly.
+                </li>
+                <li>
+                  <strong>Color vs. Black & White:</strong> Please request color copies only when absolutely necessary to help us manage costs.
+                </li>
+              </ul>
+            </div>
+
+            {/* Supply Order Instructions */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-[#83b786] mb-2">Supply Order Guidelines</h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                <li>
+                  <strong>Notice:</strong> Minimum <em>5 days</em> lead time is required for ordering supplies.
+                </li>
+                <li>
+                  <strong>Pick-up:</strong> Supplies can be collected from the designated shelf in the office (TBD) or at your selected site.
+                </li>
+                <li>
+                  <strong>Details:</strong> Provide complete product details—brand, model, size, quantity, color, vendor link, etc.—to ensure we order exactly what you need.
+                </li>
+                <li>
+                  <strong>Bulk vs. Individual:</strong> If you need items in packs (e.g., three-packs), specify that to avoid receiving single units.
+                </li>
+              </ul>
+            </div>
+
+            <div className="text-center">
+              <button
+                onClick={handleAcceptDisclaimer}
+                className="px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200"
+              >
+                Accept and Continue
+              </button>
+            </div>
           </div>
         ) : (
           <>
@@ -60,6 +99,7 @@ function OrderRequests(): JSX.Element {
                 Copy Order Form
               </NavLink>
             </div>
+
             {/* Content Area */}
             <div>
               <Routes>
