@@ -1,5 +1,4 @@
-// src/pages/OrderRequests/CopyOrderForm.tsx
-
+// src/pages/OrderRequests/CopyOrderPage.tsx
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
@@ -11,7 +10,8 @@ function CopyOrderForm(): JSX.Element {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    copyDetails: '',
+    school: 'Aquinas',          // NEW
+    blackWhiteOk: 'Yes',        // NEW (string "Yes"/"No" → easier to map to status)
     quantity: '',
     neededBy: '',
     copyLink: '',
@@ -25,23 +25,24 @@ function CopyOrderForm(): JSX.Element {
   const FORM_TYPE = 'Copy';
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
+    if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
 
   const handleClear = () => {
     setFormData({
       name: '',
       email: '',
-      copyDetails: '',
+      school: 'Aquinas',
+      blackWhiteOk: 'Yes',
       quantity: '',
       neededBy: '',
       copyLink: '',
@@ -60,15 +61,16 @@ function CopyOrderForm(): JSX.Element {
       await addDoc(collection(db, 'copyOrders'), {
         requestId,
         ...formData,
+        blackWhiteOk: formData.blackWhiteOk === 'Yes',
         neededBy: Timestamp.fromDate(new Date(formData.neededBy)),
         createdAt: Timestamp.now(),
       });
 
-      // Map formData to match the Monday.com structure used in createMondayTask
       const mondayFormData = {
         name: formData.name,
         email: formData.email,
-        suppliesNeeded: formData.copyDetails, // Map copyDetails to suppliesNeeded
+        school: formData.school,
+        blackWhiteOk: formData.blackWhiteOk === 'Yes',
         quantity: parseInt(formData.quantity, 10),
         neededBy: formData.neededBy,
         supplyLink: formData.copyLink,
@@ -113,6 +115,7 @@ function CopyOrderForm(): JSX.Element {
             required
           />
         </div>
+
         {/* Email */}
         <div>
           <label className="block text-gray-700 font-medium">Your Email</label>
@@ -126,20 +129,41 @@ function CopyOrderForm(): JSX.Element {
             required
           />
         </div>
-        {/* Copy Details */}
+
+        {/* School —— NEW */}
         <div>
           <label className="block text-gray-700 font-medium">
-            What would you like copied?
+            Which campus are you at?
           </label>
-          <textarea
-            name="copyDetails"
-            value={formData.copyDetails}
+          <select
+            name="school"
+            value={formData.school}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
-            placeholder="Enter copy details"
             required
-          />
+          >
+            <option value="Aquinas">Aquinas</option>
+            <option value="GRCC">GRCC</option>
+          </select>
         </div>
+
+        {/* Black & White OK —— NEW */}
+        <div>
+          <label className="block text-gray-700 font-medium">
+            Is black &amp; white printing okay?
+          </label>
+          <select
+            name="blackWhiteOk"
+            value={formData.blackWhiteOk}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+            required
+          >
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
         {/* Quantity */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -155,6 +179,7 @@ function CopyOrderForm(): JSX.Element {
             required
           />
         </div>
+
         {/* Needed By */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -169,6 +194,7 @@ function CopyOrderForm(): JSX.Element {
             required
           />
         </div>
+
         {/* Copy Link */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -183,6 +209,7 @@ function CopyOrderForm(): JSX.Element {
             placeholder="Insert link for the copy"
           />
         </div>
+
         {/* Additional Information */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -196,6 +223,7 @@ function CopyOrderForm(): JSX.Element {
             placeholder="Write any additional instructions or information"
           />
         </div>
+
         {/* File Upload */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -209,8 +237,8 @@ function CopyOrderForm(): JSX.Element {
           />
         </div>
 
-        {/* Clear Form Button */}
-        <div className="text-center">
+        {/* Buttons */}
+        <div className="text-center space-x-4">
           <button
             type="button"
             onClick={handleClear}
@@ -218,10 +246,7 @@ function CopyOrderForm(): JSX.Element {
           >
             Clear Form
           </button>
-        </div>
 
-        {/* Submit Button */}
-        <div className="text-center">
           <button
             type="submit"
             className={`px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200 ${
@@ -229,7 +254,7 @@ function CopyOrderForm(): JSX.Element {
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Copy Request'}
+            {isSubmitting ? 'Submitting…' : 'Submit Copy Request'}
           </button>
         </div>
       </form>

@@ -1,5 +1,4 @@
 // src/pages/OrderRequests/SupplyOrderPage.tsx
-
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
@@ -11,43 +10,39 @@ function SupplyOrderPage(): JSX.Element {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    school: 'Aquinas',          // NEW
     suppliesNeeded: '',
     quantity: '',
     neededBy: '',
     supplyLink: '',
     additionalInfo: '',
   });
-  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const MONDAY_SUPPLY_BOARD_ID = process.env.REACT_APP_MONDAY_SUPPLY_BOARD_ID || '7848780989';
-  const MONDAY_SUPPLY_GROUP_ID = process.env.REACT_APP_MONDAY_SUPPLY_GROUP_ID || 'topics';
+  const MONDAY_SUPPLY_BOARD_ID =
+    process.env.REACT_APP_MONDAY_SUPPLY_BOARD_ID || '7848780989';
+  const MONDAY_SUPPLY_GROUP_ID =
+    process.env.REACT_APP_MONDAY_SUPPLY_GROUP_ID || 'topics';
   const FORM_TYPE = 'Supply';
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
   };
 
   const handleClear = () => {
     setFormData({
       name: '',
       email: '',
+      school: 'Aquinas',
       suppliesNeeded: '',
       quantity: '',
       neededBy: '',
       supplyLink: '',
       additionalInfo: '',
     });
-    setFile(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +73,6 @@ function SupplyOrderPage(): JSX.Element {
         boardId: MONDAY_SUPPLY_BOARD_ID,
         groupId: MONDAY_SUPPLY_GROUP_ID,
         formType: FORM_TYPE,
-        file: file || undefined,
       });
 
       toast.success('Supply Order Request Successfully Submitted!');
@@ -111,6 +105,7 @@ function SupplyOrderPage(): JSX.Element {
             required
           />
         </div>
+
         {/* Email */}
         <div>
           <label className="block text-gray-700 font-medium">Your Email</label>
@@ -124,6 +119,24 @@ function SupplyOrderPage(): JSX.Element {
             required
           />
         </div>
+
+        {/* School  —— NEW */}
+        <div>
+          <label className="block text-gray-700 font-medium">
+            Which campus are you at?
+          </label>
+          <select
+            name="school"
+            value={formData.school}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#83b786]"
+            required
+          >
+            <option value="Aquinas">Aquinas</option>
+            <option value="GRCC">GRCC</option>
+          </select>
+        </div>
+
         {/* Supplies Needed */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -138,6 +151,7 @@ function SupplyOrderPage(): JSX.Element {
             required
           />
         </div>
+
         {/* Quantity */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -153,6 +167,7 @@ function SupplyOrderPage(): JSX.Element {
             required
           />
         </div>
+
         {/* Needed By */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -167,6 +182,7 @@ function SupplyOrderPage(): JSX.Element {
             required
           />
         </div>
+
         {/* Supply Link */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -181,6 +197,7 @@ function SupplyOrderPage(): JSX.Element {
             placeholder="Insert link for the supply"
           />
         </div>
+
         {/* Additional Information */}
         <div>
           <label className="block text-gray-700 font-medium">
@@ -194,21 +211,9 @@ function SupplyOrderPage(): JSX.Element {
             placeholder="Write any additional instructions or information"
           />
         </div>
-        {/* File Upload */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Upload File (if applicable)
-          </label>
-          <input
-            type="file"
-            name="file"
-            onChange={handleFileChange}
-            className="mt-1 block w-full text-gray-700"
-          />
-        </div>
 
-        {/* Clear Form Button */}
-        <div className="text-center">
+        {/* Buttons */}
+        <div className="text-center space-x-4">
           <button
             type="button"
             onClick={handleClear}
@@ -216,10 +221,7 @@ function SupplyOrderPage(): JSX.Element {
           >
             Clear Form
           </button>
-        </div>
 
-        {/* Submit Button */}
-        <div className="text-center">
           <button
             type="submit"
             className={`px-6 py-3 bg-[#83b786] text-white font-semibold rounded-md hover:bg-[#72a376] transition-colors duration-200 ${
@@ -227,7 +229,7 @@ function SupplyOrderPage(): JSX.Element {
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Order Request'}
+            {isSubmitting ? 'Submitting…' : 'Submit Order Request'}
           </button>
         </div>
       </form>
